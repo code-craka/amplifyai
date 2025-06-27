@@ -4,6 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Clock, Calendar, Users, BarChart3 } from 'lucide-react'
 
+interface SchedulingLog {
+  id: string
+  posts_processed: number
+  processed_at: string
+}
+
 export default async function AdminPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -90,7 +96,7 @@ export default async function AdminPage() {
           <CardContent>
             {schedulingLogs && schedulingLogs.length > 0 ? (
               <div className="space-y-3">
-                {schedulingLogs.map((log: any) => (
+                {schedulingLogs.map((log: SchedulingLog) => (
                   <div key={log.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                     <div>
                       <p className="text-sm font-medium">

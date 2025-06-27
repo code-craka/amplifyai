@@ -25,7 +25,7 @@ export default function Header({ user }: { user: User | null }) {
           </div>
         )}
       </div>
-      <AuthButton user={user} />
+      <AuthButton />
     </div>
   )
 }

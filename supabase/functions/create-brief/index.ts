@@ -148,6 +148,52 @@ serve(async (req) => {
       const copyData = await copyResponse.json()
       const generatedText = copyData.choices[0].message.content
 
+      let generatedMediaUrls = null;
+
+      // Generate image if post type is image+caption
+      if (strategy.post_type === 'image+caption') {
+        console.log(`Generating image for ${strategy.platform}...`);
+        const imagePrompt = `Generate a social media image for ${brand.brand_name} about ${topic} with a ${strategy.content_angle} angle. Key message: ${strategy.key_message}`;
+        
+        const imageResponse = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'dall-e-3',
+            prompt: imagePrompt,
+            n: 1,
+            size: '1024x1024', // Or other sizes based on platform
+            response_format: 'b64_json',
+          }),
+        });
+
+        if (!imageResponse.ok) {
+          console.error(`Image generation failed for ${strategy.platform}: ${imageResponse.statusText}`);
+        } else {
+          const imageData = await imageResponse.json();
+          const base64Image = imageData.data[0].b64_json;
+          const imageBuffer = Uint8Array.from(atob(base64Image), c => c.charCodeAt(0));
+
+          const fileName = `generated-content/${Date.now()}-${strategy.platform}.png`;
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('generated-content')
+            .upload(fileName, imageBuffer, {
+              contentType: 'image/png',
+              upsert: true,
+            });
+
+          if (uploadError) {
+            console.error(`Failed to upload image to Supabase Storage:`, uploadError);
+          } else {
+            const { data: { publicUrl } } = supabase.storage.from('generated-content').getPublicUrl(fileName);
+            generatedMediaUrls = [publicUrl];
+          }
+        }
+      }
+
       // Save generated post to database
       const { data: post, error: postError } = await supabase
         .from('generated_posts')
@@ -155,7 +201,7 @@ serve(async (req) => {
           brief_id: brief.id,
           platform: strategy.platform,
           generated_text: generatedText,
-          generated_media_urls: null,
+          generated_media_urls: generatedMediaUrls,
           status: 'draft'
         })
         .select()

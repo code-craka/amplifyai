@@ -18,9 +18,9 @@ import {
   Upload,
   Building2,
   Palette,
-  FileText,
-  Image
+  FileText
 } from 'lucide-react';
+import Image from 'next/image';
 
 interface Brand {
   id: string;
@@ -77,8 +77,8 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       setShowAddForm(false);
       resetForm();
       toast.success('Brand added successfully!');
-    } catch (error: any) {
-      toast.error(`Failed to add brand: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to add brand: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
@@ -117,8 +117,8 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       setEditingBrand(null);
       resetForm();
       toast.success('Brand updated successfully!');
-    } catch (error: any) {
-      toast.error(`Failed to update brand: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to update brand: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
@@ -139,8 +139,8 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
 
       setBrands(prev => prev.filter(brand => brand.id !== brandId));
       toast.success('Brand deleted successfully!');
-    } catch (error: any) {
-      toast.error(`Failed to delete brand: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to delete brand: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -181,8 +181,8 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
 
       setFormData(prev => ({ ...prev, logo_url: publicUrl }));
       toast.success('Logo uploaded successfully!');
-    } catch (error: any) {
-      toast.error(`Failed to upload logo: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to upload logo: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
@@ -242,9 +242,11 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
           </div>
           {formData.logo_url && (
             <div className="flex items-center gap-2">
-              <img 
+              <Image 
                 src={formData.logo_url} 
                 alt="Logo preview" 
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded object-cover"
               />
               <span className="text-sm text-green-600">Logo uploaded</span>
@@ -330,9 +332,11 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-3">
                         {brand.logo_url ? (
-                          <img 
+                          <Image 
                             src={brand.logo_url} 
                             alt={`${brand.brand_name} logo`}
+                            width={40}
+                            height={40}
                             className="w-10 h-10 rounded object-cover"
                           />
                         ) : (

@@ -26,7 +26,7 @@ interface GeneratedPost {
   id: string;
   platform: string;
   generated_text: string;
-  generated_media_urls: any;
+  generated_media_urls: string[] | null;
   status: string;
   schedule_time: string | null;
   post_url: string | null;
@@ -85,8 +85,8 @@ export function BriefDetailView({ brief: initialBrief }: BriefDetailViewProps) {
       // Update local state
       // In a real app, you might want to refetch or use optimistic updates
       window.location.reload();
-    } catch (error: any) {
-      toast.error(`Failed to update post: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to update post: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsUpdating(false);
     }
@@ -103,8 +103,8 @@ export function BriefDetailView({ brief: initialBrief }: BriefDetailViewProps) {
 
       toast.success('Post approved!');
       window.location.reload();
-    } catch (error: any) {
-      toast.error(`Failed to approve post: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Failed to approve post: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -112,8 +112,8 @@ export function BriefDetailView({ brief: initialBrief }: BriefDetailViewProps) {
     try {
       await navigator.clipboard.writeText(text);
       toast.success('Copied to clipboard!');
-    } catch (error) {
-      toast.error('Failed to copy to clipboard');
+    } catch (error: unknown) {
+      toast.error(`Failed to copy to clipboard: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

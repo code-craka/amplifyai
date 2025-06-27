@@ -3,11 +3,12 @@ import { redirect, notFound } from 'next/navigation'
 import { BriefDetailView } from './BriefDetailView'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default async function BriefDetailPage({ params }: PageProps) {
-  const supabase = createClient()
+  const resolvedParams = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
@@ -36,7 +37,7 @@ export default async function BriefDetailPage({ params }: PageProps) {
         post_url
       )
     `)
-    .eq('id', params.id)
+    .eq('id', resolvedParams.id)
     .eq('user_id', user.id)
     .single()
 

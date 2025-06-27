@@ -1,3 +1,4 @@
+
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -17,179 +18,171 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // This function is called by pg_cron, so no user auth needed
-    console.log('Checking for posts ready to publish...')
-
-    // Get posts that are ready to post
-    const { data: readyPosts, error: fetchError } = await supabase
+    // This function will be triggered by a cron job
+    const { data: postsToPublish, error } = await supabase
       .from('generated_posts')
       .select(`
-        id,
-        platform,
-        generated_text,
-        generated_media_urls,
-        content_briefs!inner(
-          user_id,
-          brands!inner(
-            brand_name
-          )
-        )
+        *,
+        social_connections(*)
       `)
-      .eq('status', 'ready_to_post')
-      .limit(10) // Process in batches
+      .eq('status', 'scheduled')
+      .lte('schedule_time', new Date().toISOString())
 
-    if (fetchError) {
-      throw new Error(`Failed to fetch ready posts: ${fetchError.message}`)
+    if (error) {
+      throw error
     }
 
-    if (!readyPosts || readyPosts.length === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No posts ready to publish' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
+    for (const post of postsToPublish) {
+      const { social_connections, platform, generated_text } = post
+      const connection = social_connections[0]
 
-    console.log(`Found ${readyPosts.length} posts ready to publish`)
-
-    const publishResults = []
-
-    for (const post of readyPosts) {
-      try {
-        // Simulate posting to social media platform
-        // In a real implementation, you would integrate with:
-        // - LinkedIn API for LinkedIn posts
-        // - Twitter API for Twitter posts
-        // - Facebook Graph API for Facebook posts
-        // - Instagram Basic Display API for Instagram posts
-        
-        const postResult = await simulatePostToSocialMedia(post)
-        
-        // Update post status based on result
-        if (postResult.success) {
-          await supabase
-            .from('generated_posts')
-            .update({
-              status: 'posted',
-              posted_at: new Date().toISOString(),
-              post_url: postResult.post_url
-            })
-            .eq('id', post.id)
-          
-          publishResults.push({
-            post_id: post.id,
-            platform: post.platform,
-            success: true,
-            post_url: postResult.post_url
-          })
-        } else {
-          await supabase
-            .from('generated_posts')
-            .update({
-              status: 'error',
-              posting_error: postResult.error
-            })
-            .eq('id', post.id)
-          
-          publishResults.push({
-            post_id: post.id,
-            platform: post.platform,
-            success: false,
-            error: postResult.error
-          })
-        }
-        
-      } catch (error) {
-        console.error(`Failed to publish post ${post.id}:`, error)
-        
-        await supabase
-          .from('generated_posts')
-          .update({
-            status: 'error',
-            posting_error: error.message
-          })
-          .eq('id', post.id)
-        
-        publishResults.push({
-          post_id: post.id,
-          platform: post.platform,
-          success: false,
-          error: error.message
-        })
+      if (!connection) {
+        // Handle case where there is no social connection for the user
+        continue
       }
+
+      // Decrypt access token
+      const { data: decryptedToken, error: decryptError } = await supabase.rpc('decrypt_token', { token: connection.access_token })
+
+      if (decryptError) {
+        // Handle decryption error
+        continue
+      }
+
+      // Publish to the respective platform
+      switch (platform) {
+        case 'linkedin':
+          // Call LinkedIn API to publish post
+          const linkedinBody: any = {
+            author: `urn:li:person:${connection.platform_user_id}`,
+            lifecycleState: 'PUBLISHED',
+            specificContent: {
+              'com.linkedin.ugc.ShareContent': {
+                shareCommentary: {
+                  text: generated_text,
+                },
+                shareMediaCategory: 'NONE',
+              },
+            },
+            visibility: {
+              'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
+            },
+          };
+
+          if (post.generated_media_urls && post.generated_media_urls.length > 0) {
+            // For simplicity, assuming the first media URL is an image
+            linkedinBody.specificContent['com.linkedin.ugc.ShareContent'].media = [{
+              status: 'READY',
+              media: `urn:li:digitalmediaAsset:${post.generated_media_urls[0].split('/').pop().split('.')[0]}`,
+            }];
+            linkedinBody.specificContent['com.linkedin.ugc.ShareContent'].shareMediaCategory = 'IMAGE';
+          }
+
+          const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${decryptedToken}`,
+              'Content-Type': 'application/json',
+              'X-Restli-Protocol-Version': '2.0.0',
+            },
+            body: JSON.stringify(linkedinBody),
+          })
+
+          if (!response.ok) {
+            const errorData = await response.json()
+            throw new Error(`LinkedIn API error: ${errorData.message}`)
+          }
+          break
+        case 'twitter':
+          case 'twitter':
+          let media_ids: string[] = [];
+          if (post.generated_media_urls && post.generated_media_urls.length > 0) {
+            // Simplified: In a real scenario, you'd upload media first and get media_id
+            // For now, we'll just use a placeholder or skip if not a direct image upload API
+            console.log('Twitter media upload is complex and requires separate media API calls.');
+            // Example: media_id = await uploadMediaToTwitter(post.generated_media_urls[0], decryptedToken);
+            // media_ids.push(media_id);
+          }
+
+          const twitterResponse = await fetch('https://api.twitter.com/2/tweets', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${decryptedToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: generated_text,
+              // media: { media_ids: media_ids }, // Uncomment if media_ids are obtained
+            }),
+          })
+
+          if (!twitterResponse.ok) {
+            const errorData = await twitterResponse.json()
+            throw new Error(`Twitter API error: ${errorData.detail}`)
+          }
+          break
+          break
+        case 'facebook':
+          const facebookBody: any = {
+            message: generated_text,
+            access_token: decryptedToken,
+          };
+
+          if (post.generated_media_urls && post.generated_media_urls.length > 0) {
+            // For simplicity, assuming the first media URL is an image
+            facebookBody.url = post.generated_media_urls[0];
+          }
+
+          const facebookResponse = await fetch(`https://graph.facebook.com/v12.0/${connection.platform_user_id}/photos`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(facebookBody),
+          })
+
+          if (!facebookResponse.ok) {
+            const errorData = await facebookResponse.json()
+            throw new Error(`Facebook API error: ${errorData.error.message}`)
+          }
+          break
+        case 'instagram':
+          // Call Instagram API to publish post
+          // This is a simplified example. The Instagram Content Publishing API is more complex.
+          const instagramBody: any = {
+            caption: generated_text,
+            access_token: decryptedToken,
+          };
+
+          if (post.generated_media_urls && post.generated_media_urls.length > 0) {
+            instagramBody.image_url = post.generated_media_urls[0];
+          }
+
+          const instagramResponse = await fetch(`https://graph.facebook.com/v12.0/${connection.platform_user_id}/media`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(instagramBody),
+          })
+
+          if (!instagramResponse.ok) {
+            const errorData = await instagramResponse.json()
+            throw new Error(`Instagram API error: ${errorData.error.message}`)
+          }
+          break
+      }
+
+      // Update post status to 'published'
+      await supabase
+        .from('generated_posts')
+        .update({ status: 'published' })
+        .eq('id', post.id)
     }
 
-    return new Response(
-      JSON.stringify({ 
-        success: true,
-        processed: publishResults.length,
-        results: publishResults
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ message: 'Published posts' }), { status: 200 })
 
   } catch (error) {
-    console.error('Error in publish-post function:', error)
-    
-    return new Response(
-      JSON.stringify({ 
-        error: error.message || 'An unexpected error occurred' 
-      }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 })
   }
 })
-
-// Simulate posting to social media platforms
-// In production, replace this with actual API integrations
-async function simulatePostToSocialMedia(post: any) {
-  const platform = post.platform.toLowerCase()
-  
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // Simulate success/failure (90% success rate for demo)
-  const isSuccess = Math.random() > 0.1
-  
-  if (isSuccess) {
-    // Generate a mock post URL
-    const mockPostUrl = generateMockPostUrl(platform, post.id)
-    
-    return {
-      success: true,
-      post_url: mockPostUrl,
-      platform_response: {
-        id: `${platform}_${Date.now()}`,
-        created_time: new Date().toISOString()
-      }
-    }
-  } else {
-    return {
-      success: false,
-      error: `Failed to post to ${platform}: Platform API error (simulated)`,
-      platform_response: null
-    }
-  }
-}
-
-function generateMockPostUrl(platform: string, postId: string): string {
-  const baseUrls = {
-    linkedin: 'https://linkedin.com/posts/',
-    twitter: 'https://twitter.com/user/status/',
-    instagram: 'https://instagram.com/p/',
-    facebook: 'https://facebook.com/posts/'
-  }
-  
-  const baseUrl = baseUrls[platform] || 'https://example.com/posts/'
-  const mockId = postId.slice(0, 8) + Date.now()
-  
-  return baseUrl + mockId
-}
-
-// Note: To implement real social media posting, you would need to:
-// 1. Store user's social media access tokens securely
-// 2. Implement OAuth flows for each platform
-// 3. Use platform-specific APIs:
-//    - LinkedIn: https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/shares/share-api
-//    - Twitter: https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
-//    - Facebook: https://developers.facebook.com/docs/pages/publishing
-//    - Instagram: https://developers.facebook.com/docs/instagram-api/guides/content-publishing

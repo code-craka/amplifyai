@@ -72,7 +72,7 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
           : "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
       }`}>
         <Mail className="w-5 h-5" />
-        <span className="font-medium">Thanks! You're on the waitlist.</span>
+        <span className="font-medium">Thanks! You&apos;re on the waitlist.</span>
       </div>
     );
   }

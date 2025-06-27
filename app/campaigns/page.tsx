@@ -1,10 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { CampaignForm } from './CampaignForm'
-import { User } from '@supabase/supabase-js'
 
 export default async function CampaignsPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
@@ -26,7 +25,7 @@ export default async function CampaignsPage() {
       <div className="w-full max-w-4xl">
         <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
         <div className="bg-background border rounded-lg shadow-sm">
-          {briefs?.map(brief => (
+          {briefs?.map((brief: {id: string; topic: string; created_at: string; status: string}) => (
             <div key={brief.id} className="p-4 border-b flex justify-between items-center">
               <div>
                 <p className="font-medium truncate max-w-md">{brief.topic}</p>

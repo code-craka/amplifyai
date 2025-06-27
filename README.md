@@ -1,8 +1,8 @@
-# 🚀 AmplifyAI
+# 🚀 AmplifyAI v2.0
 
-> **AI-Powered Social Media Content Generation Platform**
+> **Enterprise AI-Powered Social Media Content Generation Platform**
 
-Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms.
+Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now with enhanced user experience features including interactive calendar, bulk operations, and content templates.
 
 ![AmplifyAI Banner](https://via.placeholder.com/800x400/6366f1/ffffff?text=AmplifyAI+-+AI-Powered+Social+Media+Content)
 
@@ -18,9 +18,10 @@ AmplifyAI revolutionizes content creation by solving the three biggest challenge
 
 ### 🤖 Dual AI System
 
-- **Gemini 1.5 Pro** for strategic content planning
-- **Claude 3.5 Sonnet** for professional copywriting
-- Seamless AI prompt chaining for optimal results
+- **OpenAI GPT-4** for copywriting and content generation
+- **Vertex AI Gemini** for strategic content planning
+- Intelligent provider selection and automatic failover
+- Cost optimization through smart routing
 
 ### 📱 Multi-Platform Optimization
 
@@ -50,13 +51,21 @@ AmplifyAI revolutionizes content creation by solving the three biggest challenge
 - Optimal posting time suggestions
 - Schedule management interface
 
+### 📊 Enhanced User Experience (NEW)
+
+- **Interactive Calendar** - Month/week/day views with post previews
+- **Bulk Operations** - Multi-select content management with batch actions
+- **Content Templates** - Library of reusable templates with performance tracking
+- **Advanced Dashboard** - 5-tab interface (Overview, Calendar, Bulk Ops, Templates, Analytics)
+- **Mobile Responsive** - Touch-friendly controls and optimized layouts
+
 ## 🛠️ Tech Stack
 
 | Category | Technology |
 |----------|------------|
 | **Frontend** | Next.js 15, React 19, TypeScript |
 | **Backend** | Supabase (PostgreSQL, Auth, Realtime) |
-| **AI/ML** | Gemini 1.5 Pro, Claude 3.5 Sonnet |
+| **AI/ML** | OpenAI GPT-4, Vertex AI Gemini (Dual Provider) |
 | **UI/UX** | shadcn/ui, Tailwind CSS, Radix UI |
 | **Scheduling** | pg_cron, Supabase Edge Functions |
 | **Security** | RLS Policies, Enhanced Middleware |
