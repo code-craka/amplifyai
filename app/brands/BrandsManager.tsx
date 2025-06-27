@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { 
   Plus, 
@@ -18,9 +19,13 @@ import {
   Upload,
   Building2,
   Palette,
-  FileText
+  FileText,
+  Crown,
+  AlertCircle
 } from 'lucide-react';
 import Image from 'next/image';
+import { useCanCreateContent } from '@/hooks/useUsageLimits';
+import { enforceUsageLimit, UsageLimitError } from '@/lib/subscription/usage-limits';
 
 interface Brand {
   id: string;
@@ -48,6 +53,12 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
   const [logoUrl, setLogoUrl] = useState('');
 
   const supabase = createClient();
+  const { 
+    canCreateBrand, 
+    brandsRemaining, 
+    planType, 
+    brandLimit 
+  } = useCanCreateContent();
 
   const resetForm = () => {
     setBrandName('');
@@ -68,6 +79,9 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
     setIsLoading(true);
 
     try {
+      // Check usage limits before creating brand
+      await enforceUsageLimit('brand');
+
       const formData = getCurrentFormData();
       const { data, error } = await supabase
         .from('brands')
@@ -82,7 +96,16 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       resetForm();
       toast.success('Brand added successfully!');
     } catch (error: unknown) {
-      toast.error(`Failed to add brand: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      if (error instanceof UsageLimitError) {
+        toast.error(error.message, {
+          action: error.upgradeRequired ? {
+            label: 'Upgrade Plan',
+            onClick: () => window.location.href = '/dashboard/settings?tab=billing'
+          } : undefined
+        });
+      } else {
+        toast.error(`Failed to add brand: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -287,11 +310,54 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
 
   return (
     <div className="space-y-6">
+      {/* Usage Display */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <Building2 className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-sm font-medium">Brands: {brands.length}/{brandLimit === -1 ? '∞' : brandLimit}</span>
+              </div>
+              {planType !== 'free' && (
+                <Badge variant="secondary" className="capitalize">
+                  <Crown className="w-3 h-3 mr-1" />
+                  {planType}
+                </Badge>
+              )}
+            </div>
+            <div className="text-sm text-gray-600">
+              {brandsRemaining > 0 || brandLimit === -1
+                ? `${brandLimit === -1 ? 'Unlimited' : brandsRemaining} remaining`
+                : 'Limit reached'
+              }
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Usage Limit Warning */}
+      {!canCreateBrand && (
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            You&apos;ve reached your brand limit of {brandLimit}. 
+            {planType === 'free' && (
+              <span> <a href="/dashboard/settings?tab=billing" className="underline">Upgrade your plan</a> to create more brands.</span>
+            )}
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Add Brand Button */}
       {!showAddForm && !editingBrand && (
-        <Button onClick={() => setShowAddForm(true)}>
+        <Button 
+          onClick={() => setShowAddForm(true)}
+          disabled={!canCreateBrand}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Add New Brand
+          {!canCreateBrand && <span className="ml-2">(Limit Reached)</span>}
         </Button>
       )}
 

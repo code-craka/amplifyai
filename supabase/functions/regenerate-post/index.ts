@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { COPYWRITING_PROMPT } from '../_shared/prompts.ts'
+import { checkUsageLimits, incrementUsage, createUsageResponse } from '../_shared/usage-tracking.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -39,6 +40,15 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Missing required field: post_id' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Check usage limits before proceeding
+    const usageLimits = await checkUsageLimits(user.id)
+    if (usageLimits && !usageLimits.can_generate_post) {
+      return createUsageResponse(
+        `You've reached your monthly post generation limit. You have ${usageLimits.posts_remaining} posts remaining.`,
+        true
       )
     }
 
@@ -123,6 +133,9 @@ serve(async (req) => {
     if (updateError) {
       throw new Error(`Failed to update post: ${updateError.message}`)
     }
+
+    // Increment usage counter for post regeneration
+    await incrementUsage(user.id, 'posts', 1)
 
     return new Response(
       JSON.stringify({ 
