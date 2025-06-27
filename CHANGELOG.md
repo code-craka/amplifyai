@@ -5,6 +5,46 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-06-27
+
+### 🔧 Critical Authentication Fixes & UI Improvements
+
+#### Fixed - Authentication Flow Issues
+- **BREAKING FIX**: Fixed authentication redirects from `/protected` to `/dashboard`
+  - Updated `components/sign-up-form.tsx` emailRedirectTo parameter
+  - Fixed `components/login-form.tsx` post-login redirect  
+  - Fixed `components/update-password-form.tsx` post-password-update redirect
+- Fixed cursor jumping issue in brand management form inputs
+- Enhanced form state management with useCallback optimization
+- Resolved 403 Forbidden errors on brands endpoint
+
+#### Removed - Starter Template Cleanup
+- Removed leftover Supabase starter template components:
+  - Deleted `/app/protected/` directory entirely
+  - Removed `components/tutorial/` directory
+  - Removed `components/deploy-button.tsx`
+  - Removed `components/env-var-warning.tsx`
+- Fixed all broken imports and references
+
+#### Enhanced - Brand Management UX
+- Enhanced controlled input components with proper state management
+- Added unique form field IDs for add/edit modes
+- Added `autoComplete="off"` to prevent browser interference
+- Optimized re-render performance with React hooks
+
+#### Technical Improvements
+- Created migration `20250627000005_fix_user_creation.sql`
+- Added `handle_new_user()` trigger function for automatic user profile creation
+- Fixed RLS policies for proper access control
+- Resolved all ESLint warnings (0 issues)
+- Successful TypeScript compilation and production build
+
+#### Authentication Flow Status (FIXED)
+- **Sign up** → Email confirmation → **Dashboard** ✅
+- **Login** → **Dashboard** ✅  
+- **Password reset** → **Dashboard** ✅
+- **Unauthorized access** → **Login page** ✅
+
 ## [2.0.0] - 2025-06-27
 
 ### 🎉 Major Release: Enhanced User Experience

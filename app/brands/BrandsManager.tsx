@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -188,49 +188,69 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
     }
   };
 
+  // Optimized input change handlers
+  const handleBrandNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, brand_name: e.target.value }));
+  }, []);
+
+  const handleBrandDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, brand_description: e.target.value }));
+  }, []);
+
+  const handleToneOfVoiceChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, tone_of_voice: e.target.value }));
+  }, []);
+
   const BrandForm = ({ isEditing = false }) => (
     <form onSubmit={isEditing ? handleUpdateBrand : handleAddBrand} className="space-y-4">
       <div>
-        <Label htmlFor="brand_name">Brand Name *</Label>
+        <Label htmlFor={`brand_name_${isEditing ? 'edit' : 'add'}`}>Brand Name *</Label>
         <Input
-          id="brand_name"
+          id={`brand_name_${isEditing ? 'edit' : 'add'}`}
+          name="brand_name"
+          type="text"
           value={formData.brand_name}
-          onChange={(e) => setFormData(prev => ({ ...prev, brand_name: e.target.value }))}
+          onChange={handleBrandNameChange}
           placeholder="Enter brand name"
           required
+          autoComplete="off"
         />
       </div>
 
       <div>
-        <Label htmlFor="brand_description">Brand Description *</Label>
+        <Label htmlFor={`brand_description_${isEditing ? 'edit' : 'add'}`}>Brand Description *</Label>
         <Textarea
-          id="brand_description"
+          id={`brand_description_${isEditing ? 'edit' : 'add'}`}
+          name="brand_description"
           value={formData.brand_description}
-          onChange={(e) => setFormData(prev => ({ ...prev, brand_description: e.target.value }))}
+          onChange={handleBrandDescriptionChange}
           placeholder="Describe your brand, its mission, values, and what makes it unique..."
           rows={3}
           required
+          autoComplete="off"
         />
       </div>
 
       <div>
-        <Label htmlFor="tone_of_voice">Tone of Voice *</Label>
+        <Label htmlFor={`tone_of_voice_${isEditing ? 'edit' : 'add'}`}>Tone of Voice *</Label>
         <Textarea
-          id="tone_of_voice"
+          id={`tone_of_voice_${isEditing ? 'edit' : 'add'}`}
+          name="tone_of_voice"
           value={formData.tone_of_voice}
-          onChange={(e) => setFormData(prev => ({ ...prev, tone_of_voice: e.target.value }))}
+          onChange={handleToneOfVoiceChange}
           placeholder="Describe the tone and style for your brand's communication (e.g., friendly, professional, witty, authoritative...)"
           rows={3}
           required
+          autoComplete="off"
         />
       </div>
 
       <div>
-        <Label htmlFor="logo_upload">Brand Logo (Optional)</Label>
+        <Label htmlFor={`logo_upload_${isEditing ? 'edit' : 'add'}`}>Brand Logo (Optional)</Label>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Input
-              id="logo_upload"
+              id={`logo_upload_${isEditing ? 'edit' : 'add'}`}
               type="file"
               accept="image/*"
               onChange={handleLogoUpload}

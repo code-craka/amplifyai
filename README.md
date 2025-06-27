@@ -1,8 +1,17 @@
-# 🚀 AmplifyAI v2.0
+# 🚀 AmplifyAI v2.1
 
 > **Enterprise AI-Powered Social Media Content Generation Platform**
 
-Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now with enhanced user experience features including interactive calendar, bulk operations, and content templates.
+Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now with enhanced user experience features including interactive calendar, bulk operations, content templates, and **completely fixed authentication flow**.
+
+## 🎉 Latest Updates (v2.1.0)
+
+**🔧 Critical Authentication Fixes & UI Improvements**
+- ✅ **Fixed Authentication Flow** - Users now properly redirect to dashboard after login/signup
+- ✅ **Brand Management UX** - Resolved cursor jumping issue in form inputs
+- ✅ **Starter Template Cleanup** - Removed all leftover components for cleaner codebase
+- ✅ **Zero Authentication Errors** - Complete fix for 403 Forbidden issues
+- ✅ **Enhanced Form Management** - Optimized state management with React hooks
 
 ![AmplifyAI Banner](https://via.placeholder.com/800x400/6366f1/ffffff?text=AmplifyAI+-+AI-Powered+Social+Media+Content)
 
