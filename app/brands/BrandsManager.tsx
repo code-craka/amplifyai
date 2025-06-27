@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,30 +41,34 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
   const [editingBrand, setEditingBrand] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Form states
-  const [formData, setFormData] = useState({
-    brand_name: '',
-    brand_description: '',
-    tone_of_voice: '',
-    logo_url: ''
-  });
+  // Form states with stable initial values
+  const [brandName, setBrandName] = useState('');
+  const [brandDescription, setBrandDescription] = useState('');
+  const [toneOfVoice, setToneOfVoice] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
 
   const supabase = createClient();
 
   const resetForm = () => {
-    setFormData({
-      brand_name: '',
-      brand_description: '',
-      tone_of_voice: '',
-      logo_url: ''
-    });
+    setBrandName('');
+    setBrandDescription('');
+    setToneOfVoice('');
+    setLogoUrl('');
   };
+
+  const getCurrentFormData = () => ({
+    brand_name: brandName,
+    brand_description: brandDescription,
+    tone_of_voice: toneOfVoice,
+    logo_url: logoUrl
+  });
 
   const handleAddBrand = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      const formData = getCurrentFormData();
       const { data, error } = await supabase
         .from('brands')
         .insert([formData])
@@ -86,12 +90,10 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
 
   const handleEditBrand = (brand: Brand) => {
     setEditingBrand(brand.id);
-    setFormData({
-      brand_name: brand.brand_name,
-      brand_description: brand.brand_description,
-      tone_of_voice: brand.tone_of_voice,
-      logo_url: brand.logo_url || ''
-    });
+    setBrandName(brand.brand_name);
+    setBrandDescription(brand.brand_description);
+    setToneOfVoice(brand.tone_of_voice);
+    setLogoUrl(brand.logo_url || '');
   };
 
   const handleUpdateBrand = async (e: React.FormEvent) => {
@@ -101,6 +103,7 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
     setIsLoading(true);
 
     try {
+      const formData = getCurrentFormData();
       const { error } = await supabase
         .from('brands')
         .update(formData)
@@ -179,7 +182,7 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
         .from('brand-assets')
         .getPublicUrl(filePath);
 
-      setFormData(prev => ({ ...prev, logo_url: publicUrl }));
+      setLogoUrl(publicUrl);
       toast.success('Logo uploaded successfully!');
     } catch (error: unknown) {
       toast.error(`Failed to upload logo: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -188,29 +191,21 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
     }
   };
 
-  // Optimized input change handlers
-  const handleBrandNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, brand_name: e.target.value }));
-  }, []);
+  const handleCancelEdit = () => {
+    setEditingBrand(null);
+    setShowAddForm(false);
+    resetForm();
+  };
 
-  const handleBrandDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, brand_description: e.target.value }));
-  }, []);
-
-  const handleToneOfVoiceChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, tone_of_voice: e.target.value }));
-  }, []);
-
-  const BrandForm = ({ isEditing = false }) => (
+  const BrandForm = ({ isEditing = false }: { isEditing?: boolean }) => (
     <form onSubmit={isEditing ? handleUpdateBrand : handleAddBrand} className="space-y-4">
       <div>
-        <Label htmlFor={`brand_name_${isEditing ? 'edit' : 'add'}`}>Brand Name *</Label>
+        <Label htmlFor="brand_name">Brand Name *</Label>
         <Input
-          id={`brand_name_${isEditing ? 'edit' : 'add'}`}
-          name="brand_name"
+          id="brand_name"
           type="text"
-          value={formData.brand_name}
-          onChange={handleBrandNameChange}
+          value={brandName}
+          onChange={(e) => setBrandName(e.target.value)}
           placeholder="Enter brand name"
           required
           autoComplete="off"
@@ -218,12 +213,11 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       </div>
 
       <div>
-        <Label htmlFor={`brand_description_${isEditing ? 'edit' : 'add'}`}>Brand Description *</Label>
+        <Label htmlFor="brand_description">Brand Description *</Label>
         <Textarea
-          id={`brand_description_${isEditing ? 'edit' : 'add'}`}
-          name="brand_description"
-          value={formData.brand_description}
-          onChange={handleBrandDescriptionChange}
+          id="brand_description"
+          value={brandDescription}
+          onChange={(e) => setBrandDescription(e.target.value)}
           placeholder="Describe your brand, its mission, values, and what makes it unique..."
           rows={3}
           required
@@ -232,12 +226,11 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       </div>
 
       <div>
-        <Label htmlFor={`tone_of_voice_${isEditing ? 'edit' : 'add'}`}>Tone of Voice *</Label>
+        <Label htmlFor="tone_of_voice">Tone of Voice *</Label>
         <Textarea
-          id={`tone_of_voice_${isEditing ? 'edit' : 'add'}`}
-          name="tone_of_voice"
-          value={formData.tone_of_voice}
-          onChange={handleToneOfVoiceChange}
+          id="tone_of_voice"
+          value={toneOfVoice}
+          onChange={(e) => setToneOfVoice(e.target.value)}
           placeholder="Describe the tone and style for your brand's communication (e.g., friendly, professional, witty, authoritative...)"
           rows={3}
           required
@@ -246,11 +239,11 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
       </div>
 
       <div>
-        <Label htmlFor={`logo_upload_${isEditing ? 'edit' : 'add'}`}>Brand Logo (Optional)</Label>
+        <Label htmlFor="logo_upload">Brand Logo (Optional)</Label>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Input
-              id={`logo_upload_${isEditing ? 'edit' : 'add'}`}
+              id="logo_upload"
               type="file"
               accept="image/*"
               onChange={handleLogoUpload}
@@ -260,10 +253,10 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
               <Upload className="w-4 h-4" />
             </Button>
           </div>
-          {formData.logo_url && (
+          {logoUrl && (
             <div className="flex items-center gap-2">
               <Image 
-                src={formData.logo_url} 
+                src={logoUrl} 
                 alt="Logo preview" 
                 width={32}
                 height={32}
@@ -283,14 +276,7 @@ export function BrandsManager({ initialBrands }: BrandsManagerProps) {
         <Button 
           type="button" 
           variant="outline" 
-          onClick={() => {
-            if (isEditing) {
-              setEditingBrand(null);
-            } else {
-              setShowAddForm(false);
-            }
-            resetForm();
-          }}
+          onClick={handleCancelEdit}
         >
           <X className="w-4 h-4 mr-2" />
           Cancel
