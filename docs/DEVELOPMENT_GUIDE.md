@@ -43,7 +43,8 @@ amplifyai/
 │   ├── auth/                # Authentication pages
 │   └── api/                 # API routes
 ├── components/              # Reusable React components
-│   ├── ui/                  # shadcn/ui components
+│   ├── ui/                  # shadcn/ui components + animations
+│   ├── *-section.tsx        # Landing page components
 │   └── *.tsx                # Feature components
 ├── lib/                     # Utility libraries
 │   ├── supabase.ts          # Supabase client
@@ -143,6 +144,46 @@ const debouncedUpdate = useMemo(
   () => debounce((data) => updateState(data), 100),
   []
 )
+```
+
+### Animation Best Practices
+```tsx
+// Use Framer Motion with proper types
+const motionProps = {
+  whileHover: { scale: 1.05 },
+  whileTap: { scale: 0.98 },
+  transition: { type: "spring" as const, stiffness: 400, damping: 17 }
+}
+
+// Optimize animations with reduced motion support
+const shouldReduceMotion = useReducedMotion()
+const animationProps = shouldReduceMotion ? {} : motionProps
+
+// Use scroll-reveal for performance
+<ScrollReveal direction="up" delay={0.2}>
+  <Component />
+</ScrollReveal>
+
+// Animation components pattern
+const AnimatedComponent = ({ children, ...props }) => {
+  if (props.asChild) {
+    return (
+      <Slot>
+        <motion.div {...animationProps}>
+          {children}
+        </motion.div>
+      </Slot>
+    )
+  }
+  
+  return (
+    <motion.div {...animationProps}>
+      <Component {...props}>
+        {children}
+      </Component>
+    </motion.div>
+  )
+}
 ```
 
 ### Database Query Optimization
@@ -286,6 +327,9 @@ pnpm install
 - **Cursor jumping in forms**: Use individual state variables
 - **React hydration errors**: Ensure SSR/client state matches
 - **Supabase RLS errors**: Check user authentication and policies
+- **Animation TypeScript errors**: Use `as const` for animation types
+- **Motion component errors**: Ensure proper asChild handling with Slot
+- **Framer Motion hydration**: Use conditional rendering for animations
 - **AI function timeouts**: Verify API keys and implement retries
 
 ## Performance Monitoring

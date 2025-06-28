@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-**Frontend**: Next.js 15 + React 19 + TypeScript + Tailwind CSS + shadcn/ui  
+**Frontend**: Next.js 15 + React 19 + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion  
 **Backend**: Supabase (PostgreSQL, Auth, Realtime, Storage, Edge Functions)  
 **AI Providers**: Dual system (OpenAI GPT-4 + Google Vertex AI Gemini)  
 **Authentication**: Supabase Auth with JWT tokens and RLS policies  
@@ -10,7 +10,8 @@
 **Real-time**: Supabase Realtime for live dashboard updates  
 **Scheduling**: pg_cron for automated content publishing  
 **Payment**: Stripe integration with webhooks and customer portal  
-**Performance**: Optimized with memoization, parallel processing, and indexes
+**Performance**: Optimized with memoization, parallel processing, and indexes  
+**Animations**: Framer Motion with scroll-reveal and interactive components
 
 ## Database Schema
 
@@ -122,6 +123,65 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Core Web Vitals tracking (CLS, INP, FCP, LCP, TTFB)
 - Custom performance measurement
 - Production monitoring with analytics integration
+
+### Landing Page Components (NEW)
+
+**Navigation.tsx**:
+- Responsive navigation with mobile menu
+- Smooth scrolling to sections
+- Dark/light theme toggle
+- Mobile-optimized hamburger menu
+
+**HeroSection.tsx**:
+- Animated gradient backgrounds
+- Typing animation effects
+- Call-to-action buttons with hover animations
+- Responsive design for all screen sizes
+
+**FeaturesShowcase.tsx**:
+- Scroll-reveal animations on feature cards
+- Interactive hover effects with icons
+- Grid layout with responsive breakpoints
+- Performance-optimized with lazy loading
+
+**PricingSection.tsx**:
+- Animated pricing cards with hover effects
+- Feature comparison tables
+- Call-to-action integration
+- Mobile-responsive pricing display
+
+**Footer.tsx**:
+- Comprehensive link organization
+- Social media integration
+- Legal page navigation
+- Newsletter signup integration
+
+### Animation Components
+
+**AnimatedButton.tsx**:
+- Multiple animation types: scale, glow, pulse, bounce, slide, ripple
+- TypeScript-safe animation definitions
+- Proper asChild support with Radix UI Slot
+- Gradient and glow variants for CTAs
+- Production-ready with error handling
+
+**ScrollReveal.tsx**:
+- Intersection Observer-based animations
+- Configurable animation directions and delays
+- Performance-optimized with reduced motion support
+- Customizable easing and duration
+
+**TypingAnimation.tsx**:
+- Smooth character-by-character typing effect
+- Configurable speed and cursor display
+- Loop functionality for continuous animation
+- Memory-efficient with cleanup on unmount
+
+**MotionConfig.ts**:
+- Centralized animation configurations
+- Consistent timing and easing functions
+- Accessibility-friendly motion preferences
+- Performance-optimized animation variants
 
 ## Security Implementation
 
