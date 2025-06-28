@@ -1,35 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  try {
-    const data = await request.json()
-    
-    // Log the web vitals data
-    console.log('📊 Web Vitals Received:', {
-      timestamp: new Date().toISOString(),
-      ...data
-    })
+	try {
+		const data = await request.json();
 
-    // In production, you might want to:
-    // 1. Store in database for analysis
-    // 2. Send to analytics service (Google Analytics, Mixpanel, etc.)
-    // 3. Alert on poor performance metrics
-    
-    // Example: Alert on poor Core Web Vitals
-    if (data.rating === 'poor') {
-      console.warn(`⚠️ Poor ${data.name} detected:`, {
-        value: data.value,
-        url: data.url,
-        timestamp: data.timestamp
-      })
-      
-      // In a real application, you might send alerts here:
-      // await sendSlackAlert(`Poor ${data.name}: ${data.value}ms on ${data.url}`)
-      // await logToMonitoringService(data)
-    }
+		// Log the web vitals data
+		console.log("📊 Web Vitals Received:", {
+			timestamp: new Date().toISOString(),
+			...data,
+		});
 
-    // Example: Store in database (uncomment when ready)
-    /*
+		// In production, you might want to:
+		// 1. Store in database for analysis
+		// 2. Send to analytics service (Google Analytics, Mixpanel, etc.)
+		// 3. Alert on poor performance metrics
+
+		// Example: Alert on poor Core Web Vitals
+		if (data.rating === "poor") {
+			console.warn(`⚠️ Poor ${data.name} detected:`, {
+				value: data.value,
+				url: data.url,
+				timestamp: data.timestamp,
+			});
+
+			// In a real application, you might send alerts here:
+			// await sendSlackAlert(`Poor ${data.name}: ${data.value}ms on ${data.url}`)
+			// await logToMonitoringService(data)
+		}
+
+		// Example: Store in database (uncomment when ready)
+		/*
     await supabase.from('web_vitals').insert({
       metric_name: data.name,
       metric_value: data.value,
@@ -40,24 +40,24 @@ export async function POST(request: NextRequest) {
     })
     */
 
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error processing web vitals:', error)
-    return NextResponse.json(
-      { error: 'Failed to process web vitals' },
-      { status: 500 }
-    )
-  }
+		return NextResponse.json({ success: true });
+	} catch (error) {
+		console.error("Error processing web vitals:", error);
+		return NextResponse.json(
+			{ error: "Failed to process web vitals" },
+			{ status: 500 },
+		);
+	}
 }
 
 // Handle preflight requests
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  })
+	return new NextResponse(null, {
+		status: 200,
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "POST, OPTIONS",
+			"Access-Control-Allow-Headers": "Content-Type",
+		},
+	});
 }

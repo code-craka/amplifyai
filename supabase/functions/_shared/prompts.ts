@@ -49,7 +49,7 @@ CONTENT STRATEGY:
 - Post Type: ${strategy.post_type}
 - Key Message: ${strategy.key_message}
 - Content Angle: ${strategy.content_angle}
-- Hashtags: ${strategy.hashtags.join(', ')}
+- Hashtags: ${strategy.hashtags.join(", ")}
 
 CAMPAIGN BRIEF:
 - Topic: ${brief.topic}
@@ -72,43 +72,48 @@ Focus on creating content that stops the scroll and drives meaningful engagement
 `;
 
 function getPlatformGuidelines(platform: string): string {
-  switch (platform) {
-    case 'LinkedIn':
-      return `
+	switch (platform) {
+		case "LinkedIn":
+			return `
 - Professional tone with personal insights
 - 1-3 paragraphs with line breaks
 - Include industry context
 - End with a thought-provoking question
 - Use 3-5 relevant professional hashtags`;
-    
-    case 'Twitter':
-      return `
+
+		case "Twitter":
+			return `
 - Concise and punchy (under 280 characters)
 - Use compelling hooks in first 10 words
 - Include relevant emojis sparingly
 - End with clear CTA
 - Use 2-3 trending hashtags`;
-    
-    case 'Instagram':
-      return `
+
+		case "Instagram":
+			return `
 - Storytelling approach with emotional connection
 - 3-5 short paragraphs with line breaks
 - Include relatable anecdotes
 - Strong visual description suggestions
 - Use 5-10 mix of branded and trending hashtags`;
-    
-    case 'Facebook':
-      return `
+
+		case "Facebook":
+			return `
 - Conversational and community-focused
 - 2-4 paragraphs with clear structure
 - Include questions to encourage comments
 - Personal touch with brand authority
 - Use 3-5 hashtags (less emphasis than other platforms)`;
-    
-    default:
-      return 'Create engaging, platform-appropriate content.';
-  }
+
+		default:
+			return "Create engaging, platform-appropriate content.";
+	}
 }
 
-export const PLATFORMS = ['LinkedIn', 'Twitter', 'Instagram', 'Facebook'] as const;
-export type Platform = typeof PLATFORMS[number];
+export const PLATFORMS = [
+	"LinkedIn",
+	"Twitter",
+	"Instagram",
+	"Facebook",
+] as const;
+export type Platform = (typeof PLATFORMS)[number];

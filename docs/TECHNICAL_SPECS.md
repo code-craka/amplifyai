@@ -16,6 +16,7 @@
 ## Database Schema
 
 ### Core Tables
+
 ```sql
 -- Users (managed by Supabase Auth)
 users: id, email, created_at, subscription_tier
@@ -42,6 +43,7 @@ social_connections: id, user_id, platform, encrypted_access_token, expires_at
 ```
 
 ### Performance Indexes
+
 ```sql
 -- Critical performance indexes (80% query improvement)
 CREATE INDEX idx_content_briefs_user_status ON content_briefs(user_id, status);
@@ -55,8 +57,10 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Edge Functions
 
 ### 1. create-brief (AI Content Generation)
+
 **File**: `supabase/functions/create-brief/index.ts`  
 **Features**:
+
 - Dual AI provider system (OpenAI + Vertex AI)
 - Parallel processing with controlled batching (70% speed improvement)
 - Robust error handling with Promise.allSettled
@@ -64,30 +68,38 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Comprehensive logging and error recovery
 
 ### 2. regenerate-post (Content Regeneration)
+
 **File**: `supabase/functions/regenerate-post/index.ts`  
 **Features**:
+
 - Individual post regeneration with fallback providers
 - Maintains original brief context and requirements
 - Updates existing posts instead of creating new ones
 
 ### 3. publish-post (Social Media Publishing)
+
 **File**: `supabase/functions/publish-post/index.ts`  
 **Features**:
+
 - Multi-platform publishing (LinkedIn, Twitter, Facebook, Instagram)
 - Encrypted social media token management
 - Platform-specific content formatting
 - Publishing status tracking and error handling
 
 ### 4. collect-analytics (Performance Tracking)
+
 **File**: `supabase/functions/collect-analytics/index.ts`  
 **Features**:
+
 - Real-time engagement metrics collection
 - Cross-platform analytics aggregation
 - Performance trend analysis
 
 ### 5. analyze-content-performance (AI Optimization)
+
 **File**: `supabase/functions/analyze-content-performance/index.ts`  
 **Features**:
+
 - GPT-4 powered content optimization analysis
 - A/B testing statistical significance calculation
 - Optimal posting time recommendations
@@ -98,6 +110,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### Core Dashboard Components
 
 **RealtimeDashboard.tsx** (5-tab interface):
+
 - Content Briefs management with real-time updates
 - Generated Posts with inline editing and regeneration
 - Content Calendar with interactive views
@@ -106,12 +119,14 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Performance optimized with useMemo/useCallback and debouncing
 
 **BrandsManager.tsx**:
+
 - Individual state variables (avoiding complex form objects)
 - Real-time brand creation and editing
 - Avatar upload with Supabase Storage
 - Industry-specific templates
 
 **AnalyticsDashboard.tsx**:
+
 - Memoized expensive calculations (40% performance improvement)
 - Real-time metrics visualization
 - Platform-specific performance breakdown
@@ -120,6 +135,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### Performance Components
 
 **WebVitals.tsx**:
+
 - Core Web Vitals tracking (CLS, INP, FCP, LCP, TTFB)
 - Custom performance measurement
 - Production monitoring with analytics integration
@@ -127,6 +143,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### TypeScript Modernization (v2.2.2)
 
 **React 19 Compatibility Updates**:
+
 - Replaced deprecated `React.ElementRef<T>` with `React.ComponentRef<T>` across all UI components
 - Updated 7 UI component files with modern React 19 TypeScript patterns
 - Eliminated all TypeScript deprecation warnings
@@ -134,6 +151,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Future-proof codebase with latest React typing standards
 
 **Updated Components**:
+
 - `components/ui/progress.tsx` - Progress component ref typing
 - `components/ui/tabs.tsx` - TabsList, TabsTrigger, TabsContent components
 - `components/ui/select.tsx` - All select-related components (7 updates)
@@ -145,6 +163,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### Dashboard Navigation Components (v2.2.1)
 
 **DashboardHeader.tsx**:
+
 - Complete navigation header with user profile management
 - Sign-out functionality with toast notifications  
 - Responsive navigation with mobile hamburger menu
@@ -154,6 +173,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Professional AmplifyAI branding with gradient logo
 
 **Enhanced RealtimeDashboard.tsx**:
+
 - URL-based tab navigation with search params
 - Navigation between dashboard sections via URLs
 - Enhanced error handling in analytics components
@@ -162,30 +182,35 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### Landing Page Components (v2.2.0)
 
 **Navigation.tsx**:
+
 - Responsive navigation with mobile menu
 - Smooth scrolling to sections
 - Dark/light theme toggle
 - Mobile-optimized hamburger menu
 
 **HeroSection.tsx**:
+
 - Animated gradient backgrounds
 - Typing animation effects
 - Call-to-action buttons with hover animations
 - Responsive design for all screen sizes
 
 **FeaturesShowcase.tsx**:
+
 - Scroll-reveal animations on feature cards
 - Interactive hover effects with icons
 - Grid layout with responsive breakpoints
 - Performance-optimized with lazy loading
 
 **PricingSection.tsx**:
+
 - Animated pricing cards with hover effects
 - Feature comparison tables
 - Call-to-action integration
 - Mobile-responsive pricing display
 
 **Footer.tsx**:
+
 - Comprehensive link organization
 - Social media integration
 - Legal page navigation
@@ -194,6 +219,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ### Animation Components
 
 **AnimatedButton.tsx**:
+
 - Multiple animation types: scale, glow, pulse, bounce, slide, ripple
 - TypeScript-safe animation definitions
 - Proper asChild support with Radix UI Slot
@@ -201,18 +227,21 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Production-ready with error handling
 
 **ScrollReveal.tsx**:
+
 - Intersection Observer-based animations
 - Configurable animation directions and delays
 - Performance-optimized with reduced motion support
 - Customizable easing and duration
 
 **TypingAnimation.tsx**:
+
 - Smooth character-by-character typing effect
 - Configurable speed and cursor display
 - Loop functionality for continuous animation
 - Memory-efficient with cleanup on unmount
 
 **MotionConfig.ts**:
+
 - Centralized animation configurations
 - Consistent timing and easing functions
 - Accessibility-friendly motion preferences
@@ -221,18 +250,21 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Security Implementation
 
 ### Authentication & Authorization
+
 - Supabase Auth with JWT tokens
 - Row Level Security (RLS) policies on all tables
 - User-scoped data access with automatic filtering
 - Session management with automatic token refresh
 
 ### API Security
+
 - Rate limiting (100 requests/minute per user)
 - CORS configuration for secure cross-origin requests
 - Request validation and sanitization
 - Encrypted social media tokens in database
 
 ### Application Security
+
 - Security headers (CSP, XSS protection, frame options)
 - Next.js security best practices
 - Environment variable protection
@@ -241,15 +273,18 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## AI Integration
 
 ### Dual Provider System
+
 **Primary**: OpenAI GPT-4 (content generation, optimization analysis)  
 **Secondary**: Google Vertex AI Gemini (fallback, diversity)  
 **Features**:
+
 - Automatic failover between providers
 - Provider-specific prompt optimization
 - Token usage tracking and cost optimization
 - Response quality validation
 
 ### Content Generation Pipeline
+
 1. **Brief Analysis**: Extract requirements, tone, audience
 2. **Strategy Development**: AI-powered content strategy
 3. **Content Creation**: Platform-specific content generation
@@ -259,17 +294,20 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Performance Optimizations
 
 ### Database Performance (80% improvement)
+
 - Critical indexes for all query patterns
 - Composite indexes for complex filters
 - Query optimization with efficient JOIN operations
 
 ### AI Processing (70% speed improvement)
+
 - Parallel processing with controlled batching
 - Concurrent API calls (batch size: 3)
 - Promise.allSettled for robust error handling
 - Expected: 60s → 18s content generation time
 
 ### Frontend Performance (50% render improvement)
+
 - React.memo for component memoization
 - useMemo for expensive calculations
 - useCallback for event handlers
@@ -277,6 +315,7 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Optimized dependency arrays
 
 ### Bundle Optimization (30% size reduction)
+
 - Next.js production optimizations
 - Gzip compression enabled
 - Package import optimization
@@ -286,17 +325,20 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Subscription & Billing
 
 ### Stripe Integration
+
 - Webhook handling for subscription events
 - Customer portal for self-service management
 - Usage-based billing with real-time tracking
 - Prorated upgrades and cancellations
 
 ### Tier Management
+
 **Free Tier**: 5 posts/month, 1 brand  
 **Pro Tier ($29/month)**: 100 posts/month, 5 brands  
 **Agency Tier ($99/month)**: Unlimited posts, unlimited brands, team features
 
 ### Usage Enforcement
+
 - Real-time usage tracking with database functions
 - Soft limits with upgrade prompts
 - Hard limits with graceful degradation
@@ -305,12 +347,14 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Deployment & Infrastructure
 
 ### Production Environment
+
 - **Frontend**: Vercel deployment with Next.js optimizations
 - **Backend**: Supabase Pro with production database
 - **CDN**: Automatic asset optimization and caching
 - **Monitoring**: Error tracking and performance monitoring
 
 ### Environment Configuration
+
 - Supabase Vault for secure credential management
 - Environment-specific configurations
 - Production/development feature flags
@@ -319,12 +363,14 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Monitoring & Analytics
 
 ### Performance Monitoring
+
 - Core Web Vitals tracking
 - Custom performance metrics
 - Database query performance monitoring
 - AI processing time tracking
 
 ### Business Analytics
+
 - User engagement metrics
 - Content performance analytics
 - Subscription conversion tracking
@@ -333,18 +379,21 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ## Development Workflow
 
 ### Code Quality
+
 - TypeScript strict mode
 - ESLint with zero warnings policy
 - Prettier code formatting
 - Conventional commit messages
 
 ### Testing Strategy
+
 - Component unit testing
 - API endpoint testing
 - End-to-end user flow testing
 - Performance regression testing
 
 ### Version Control
+
 - Feature branch workflow
 - Pull request reviews
 - Automated testing in CI/CD
