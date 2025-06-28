@@ -11,8 +11,6 @@ import {
 	Eye,
 	Grid,
 	List,
-	Loader2,
-	XCircle,
 	Zap,
 } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
+import { getStatusIcon, getStatusColor } from "@/lib/status-utils";
 
 interface GeneratedPost {
 	id: string;
@@ -58,27 +57,56 @@ interface RealtimeDashboardProps {
 	userId: string;
 }
 
-// Memoized components for performance
+// Enhanced memoized components for performance
 const StatsCard = memo(
 	({
 		title,
 		value,
 		icon: Icon,
+		trend,
+		color = "blue",
 	}: {
 		title: string;
 		value: number;
 		icon: React.ComponentType<{ className?: string }>;
-	}) => (
-		<Card>
-			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-				<CardTitle className="text-sm font-medium">{title}</CardTitle>
-				<Icon className="h-4 w-4 text-muted-foreground" />
-			</CardHeader>
-			<CardContent>
-				<div className="text-2xl font-bold">{value}</div>
-			</CardContent>
-		</Card>
-	),
+		trend?: { value: number; label: string };
+		color?: "blue" | "green" | "purple" | "orange";
+	}) => {
+		const colorMap = {
+			blue: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20",
+			green: "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20",
+			purple: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20",
+			orange: "text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20",
+		};
+
+		return (
+			<Card className="hover:shadow-lg transition-all duration-200 border-gray-200 dark:border-gray-700">
+				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+					<CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+						{title}
+					</CardTitle>
+					<div className={`p-2 rounded-lg ${colorMap[color]}`}>
+						<Icon className="h-4 w-4" />
+					</div>
+				</CardHeader>
+				<CardContent>
+					<div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+						{value.toLocaleString()}
+					</div>
+					{trend && (
+						<div className="flex items-center text-xs">
+							<span className={`font-medium ${trend.value >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+								{trend.value >= 0 ? '+' : ''}{trend.value}%
+							</span>
+							<span className="text-gray-500 dark:text-gray-400 ml-1">
+								{trend.label}
+							</span>
+						</div>
+					)}
+				</CardContent>
+			</Card>
+		);
+	},
 );
 
 const BriefCard = memo(
@@ -89,104 +117,88 @@ const BriefCard = memo(
 		brief: ContentBrief;
 		onView: (id: string) => void;
 	}) => {
-		const getStatusIcon = useCallback((status: string) => {
-			switch (status) {
-				case "pending":
-					return <Clock className="w-4 h-4 text-gray-500" />;
-				case "processing":
-					return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
-				case "completed":
-					return <CheckCircle className="w-4 h-4 text-green-500" />;
-				case "error":
-					return <XCircle className="w-4 h-4 text-red-500" />;
-				default:
-					return <Clock className="w-4 h-4 text-gray-500" />;
-			}
-		}, []);
-
-		const getStatusColor = useCallback((status: string) => {
-			switch (status) {
-				case "pending":
-					return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
-				case "processing":
-					return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
-				case "completed":
-					return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-				case "error":
-					return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-				default:
-					return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
-			}
-		}, []);
 
 		return (
-			<Card className="hover:shadow-md transition-shadow">
-				<CardHeader>
-					<div className="flex justify-between items-start">
-						<div className="flex-1">
-							<CardTitle className="flex items-center gap-2">
+			<Card className="hover:shadow-lg transition-all duration-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600">
+				<CardHeader className="pb-4">
+					<div className="flex justify-between items-start gap-4">
+						<div className="flex-1 min-w-0">
+							<CardTitle className="flex items-center gap-3 mb-2">
 								{getStatusIcon(brief.status)}
-								<span className="truncate">{brief.topic}</span>
-							</CardTitle>
-							<div className="flex items-center gap-2 mt-1">
-								<span className="text-sm text-gray-600 dark:text-gray-400">
-									{brief.brands.brand_name}
+								<span className="truncate text-lg font-semibold text-gray-900 dark:text-white">
+									{brief.topic}
 								</span>
-								<span className="text-xs text-gray-400">•</span>
-								<span className="text-xs text-gray-400">
-									{new Date(brief.created_at).toLocaleString()}
+							</CardTitle>
+							<div className="flex items-center gap-3 text-sm">
+								<div className="flex items-center gap-2">
+									<div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+									<span className="text-gray-600 dark:text-gray-400 font-medium">
+										{brief.brands.brand_name}
+									</span>
+								</div>
+								<span className="text-gray-300 dark:text-gray-600">•</span>
+								<span className="text-gray-500 dark:text-gray-400">
+									{new Date(brief.created_at).toLocaleDateString()}
 								</span>
 							</div>
 						</div>
-						<Badge className={getStatusColor(brief.status)}>
-							{brief.status}
+						<Badge className={`${getStatusColor(brief.status)} font-medium px-3 py-1`}>
+							{brief.status.charAt(0).toUpperCase() + brief.status.slice(1)}
 						</Badge>
 					</div>
 				</CardHeader>
 
-				<CardContent>
-					<div className="space-y-3">
-						<p className="text-sm text-gray-600 dark:text-gray-400">
-							Goal: {brief.goal}
+				<CardContent className="space-y-4">
+					<div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
+						<p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+							<span className="font-medium text-gray-900 dark:text-white">Goal:</span> {brief.goal}
 						</p>
+					</div>
 
-						{brief.generated_posts.length > 0 && (
-							<div>
-								<h4 className="text-sm font-medium mb-2">
-									Generated Posts ({brief.generated_posts.length})
-								</h4>
-								<div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-									{brief.generated_posts.map((post) => (
-										<div
-											key={post.id}
-											className="text-xs bg-gray-50 dark:bg-gray-800 rounded px-2 py-1 flex items-center justify-between"
-										>
-											<span>{post.platform}</span>
-											<Badge variant="outline" className="text-xs">
-												{post.status}
-											</Badge>
-										</div>
-									))}
-								</div>
+					{brief.generated_posts.length > 0 && (
+						<div>
+							<h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+								<Zap className="h-4 w-4 text-blue-500" />
+								Generated Posts ({brief.generated_posts.length})
+							</h4>
+							<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+								{brief.generated_posts.map((post) => (
+									<div
+										key={post.id}
+										className="bg-white dark:bg-gray-800 rounded-lg px-3 py-2 border border-gray-200 dark:border-gray-700 flex items-center justify-between hover:shadow-sm transition-shadow"
+									>
+										<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+											{post.platform}
+										</span>
+										<Badge variant="outline" className="text-xs">
+											{post.status}
+										</Badge>
+									</div>
+								))}
 							</div>
-						)}
-
-						<div className="flex gap-2 pt-2">
-							<Button
-								size="sm"
-								variant="outline"
-								onClick={() => onView(brief.id)}
-							>
-								<Eye className="w-3 h-3 mr-1" />
-								View Details
-							</Button>
-							{brief.status === "completed" && (
-								<Button size="sm" variant="outline">
-									<Calendar className="w-3 h-3 mr-1" />
-									Schedule Posts
-								</Button>
-							)}
 						</div>
+					)}
+
+					<div className="flex gap-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+						<Button
+							size="sm"
+							variant="default"
+							onClick={() => onView(brief.id)}
+							className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+						>
+							<Eye className="w-4 h-4 mr-2" />
+							View Details
+						</Button>
+						{brief.status === "completed" && (
+							<Button 
+								size="sm" 
+								variant="outline"
+								className="border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
+							>
+								<Calendar className="w-4 h-4 mr-2" />
+								Schedule Posts
+							</Button>
+						)}
 					</div>
 				</CardContent>
 			</Card>
@@ -426,27 +438,35 @@ export function RealtimeDashboard({
 				</span>
 			</div>
 
-			{/* Stats Overview */}
-			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+			{/* Enhanced Stats Overview */}
+			<div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 				<StatsCard
 					title="Total Campaigns"
 					value={stats.totalCampaigns}
 					icon={BarChart3}
+					color="blue"
+					trend={{ value: 12, label: "vs last month" }}
 				/>
 				<StatsCard
 					title="Completed"
 					value={stats.completedCampaigns}
 					icon={CheckCircle}
+					color="green"
+					trend={{ value: 8, label: "vs last month" }}
 				/>
 				<StatsCard
 					title="Posts Generated"
 					value={stats.totalPosts}
 					icon={Zap}
+					color="purple"
+					trend={{ value: 23, label: "vs last month" }}
 				/>
 				<StatsCard
 					title="Scheduled Posts"
 					value={scheduledPostsCount}
 					icon={Calendar}
+					color="orange"
+					trend={{ value: 15, label: "vs last month" }}
 				/>
 			</div>
 
@@ -492,23 +512,56 @@ export function RealtimeDashboard({
 					</div>
 
 					{briefs.length === 0 ? (
-						<Card>
-							<CardContent className="flex flex-col items-center justify-center py-12">
-								<Zap className="h-12 w-12 text-gray-400 mb-4" />
-								<h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-									No campaigns yet
-								</h3>
-								<p className="text-gray-600 dark:text-gray-400 text-center mb-4">
-									Create your first AI-powered content campaign to get started
-								</p>
-								<Button asChild>
-									<Link href="/campaigns">Create Campaign</Link>
-								</Button>
+						<Card className="border-dashed border-2 border-gray-200 dark:border-gray-700">
+							<CardContent className="flex flex-col items-center justify-center py-16">
+								<div className="max-w-md text-center">
+									<div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 mb-6">
+										<Zap className="h-16 w-16 text-blue-500 mx-auto mb-4" />
+										<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+											Ready to create amazing content?
+										</h3>
+										<p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+											Launch your first AI-powered campaign and watch your social media engagement soar. Create professional content in minutes, not hours.
+										</p>
+										<div className="space-y-4">
+											<Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+												<Link href="/campaigns">
+													<Zap className="h-5 w-5 mr-2" />
+													Create Your First Campaign
+												</Link>
+											</Button>
+											<div className="flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+												<div className="flex items-center gap-1">
+													<CheckCircle className="h-4 w-4 text-green-500" />
+													<span>Free to start</span>
+												</div>
+												<div className="flex items-center gap-1">
+													<Clock className="h-4 w-4 text-blue-500" />
+													<span>2-min setup</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="grid grid-cols-3 gap-4 text-center">
+										<div className="p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+											<div className="text-2xl font-bold text-blue-600 dark:text-blue-400">1.</div>
+											<div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Describe your brand</div>
+										</div>
+										<div className="p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+											<div className="text-2xl font-bold text-purple-600 dark:text-purple-400">2.</div>
+											<div className="text-xs text-gray-600 dark:text-gray-400 mt-1">AI creates content</div>
+										</div>
+										<div className="p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+											<div className="text-2xl font-bold text-green-600 dark:text-green-400">3.</div>
+											<div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Publish & track</div>
+										</div>
+									</div>
+								</div>
 							</CardContent>
 						</Card>
 					) : (
 						<>
-							<div className="grid gap-4">
+							<div className="grid gap-6">
 								{paginatedBriefs.map((brief) => (
 									<BriefCard
 										key={brief.id}

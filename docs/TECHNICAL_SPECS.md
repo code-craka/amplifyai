@@ -401,6 +401,43 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 
 ---
 
+## Shared Utility Libraries (v2.7.0)
+
+### Status Utilities Module
+
+**File**: `lib/status-utils.tsx`
+**Purpose**: Centralized status handling for all content briefs and generated posts
+
+**Functions**:
+- `getStatusIcon(status: string)` - Returns appropriate Lucide React icon for status
+- `getStatusColor(status: string)` - Returns Tailwind CSS classes for status badges
+- `getStatusText(status: string)` - Returns human-readable status labels
+- `isFinalStatus(status: string)` - Checks if status is completed or error
+- `isActiveStatus(status: string)` - Checks if status is processing
+
+**Supported Status Types**:
+- `pending` - Initial state, gray clock icon
+- `processing` - Active processing, blue animated spinner
+- `completed` - Finished successfully, green check circle
+- `error` - Failed processing, red alert circle
+- `approved` - Content approved, green check circle
+- `draft` - Draft state, yellow clock icon
+- `scheduled` - Scheduled for publishing, blue calendar icon
+- `posted` - Successfully published, green check circle
+
+**Components Using Module**:
+- `RealtimeDashboard.tsx` - Main dashboard status displays
+- `ActivityFeed.tsx` - Activity timeline status indicators
+- `BriefDetailView.tsx` - Detailed content status management
+
+**Benefits**:
+- Single source of truth for all status-related UI logic
+- Consistent visual treatment across entire application
+- Easier maintenance and updates to status handling
+- Improved type safety with comprehensive TypeScript definitions
+
+---
+
 **Last Updated**: June 28, 2025  
-**Version**: 2.2.2 (TypeScript Modernization & React 19 Compatibility)  
+**Version**: 2.7.0 (Critical Duplicate Code Cleanup & Shared Utilities)  
 **Maintainer**: Sayem Abdullah Rihan (@code-craka)

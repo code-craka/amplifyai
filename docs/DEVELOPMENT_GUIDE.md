@@ -172,10 +172,10 @@ export default eslintConfig;
     "eslint-plugin-unused-imports": "^4.1.4",
     "typescript": "^5.8.3"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.0.0",
   "engines": {
-    "node": ">=18.17.0",
-    "pnpm": ">=8.0.0"
+    "node": ">=22.16.0",
+    "pnpm": ">=10.0.0"
   }
 }
 ```

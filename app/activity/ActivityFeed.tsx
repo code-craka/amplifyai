@@ -13,13 +13,13 @@ import {
 	Loader2,
 	TrendingUp,
 	Users,
-	XCircle,
 	Zap,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getStatusIcon, getStatusColor } from "@/lib/status-utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface GeneratedPost {
@@ -85,35 +85,6 @@ export function ActivityFeed({
 		return briefs.filter((brief) => brief.status === filterStatus);
 	}, [briefs, filterStatus]);
 
-	const getStatusIcon = (status: string) => {
-		switch (status) {
-			case "pending":
-				return <Clock className="w-4 h-4 text-gray-500" />;
-			case "processing":
-				return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
-			case "completed":
-				return <CheckCircle className="w-4 h-4 text-green-500" />;
-			case "error":
-				return <XCircle className="w-4 h-4 text-red-500" />;
-			default:
-				return <Clock className="w-4 h-4 text-gray-500" />;
-		}
-	};
-
-	const getStatusColor = (status: string) => {
-		switch (status) {
-			case "pending":
-				return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
-			case "processing":
-				return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
-			case "completed":
-				return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-			case "error":
-				return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-			default:
-				return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
-		}
-	};
 
 	// Calculate stats
 	const stats = useMemo(() => {

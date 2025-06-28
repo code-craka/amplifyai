@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	AlertCircle,
 	ArrowLeft,
 	Calendar,
 	CheckCircle,
@@ -15,12 +14,14 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+
 import { SchedulePostDialog } from "@/components/SchedulePostDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
+import { getStatusIcon } from "@/lib/status-utils";
 
 interface GeneratedPost {
 	id: string;
@@ -138,22 +139,6 @@ export function BriefDetailView({ brief: initialBrief }: BriefDetailViewProps) {
 		}
 	};
 
-	const getStatusIcon = (status: string) => {
-		switch (status) {
-			case "approved":
-				return <CheckCircle className="w-4 h-4 text-green-500" />;
-			case "draft":
-				return <Clock className="w-4 h-4 text-yellow-500" />;
-			case "scheduled":
-				return <Calendar className="w-4 h-4 text-blue-500" />;
-			case "posted":
-				return <ExternalLink className="w-4 h-4 text-green-500" />;
-			case "error":
-				return <AlertCircle className="w-4 h-4 text-red-500" />;
-			default:
-				return <Clock className="w-4 h-4 text-gray-500" />;
-		}
-	};
 
 	return (
 		<div className="space-y-6">
