@@ -173,8 +173,9 @@ CREATE POLICY "Users can view their own post analytics" ON public.post_analytics
     FOR SELECT USING (
         EXISTS (
             SELECT 1 FROM public.generated_posts gp
+            JOIN public.content_briefs cb ON gp.brief_id = cb.id
             WHERE gp.id = post_analytics.post_id
-            AND gp.user_id = auth.uid()
+            AND cb.user_id = auth.uid()
         )
     );
 
@@ -182,8 +183,9 @@ CREATE POLICY "Users can update their own post analytics" ON public.post_analyti
     FOR UPDATE USING (
         EXISTS (
             SELECT 1 FROM public.generated_posts gp
+            JOIN public.content_briefs cb ON gp.brief_id = cb.id
             WHERE gp.id = post_analytics.post_id
-            AND gp.user_id = auth.uid()
+            AND cb.user_id = auth.uid()
         )
     );
 

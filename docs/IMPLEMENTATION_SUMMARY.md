@@ -11,10 +11,10 @@ This document summarizes the features and functionalities that have been impleme
 ## AI Content Generation
 
 - **AI Edge Functions:**
-    - `create-brief`: Dual AI system (Gemini + Claude) for content generation.
-    - `schedule-post`: Automated scheduling of posts.
-    - `publish-post`: Content publishing pipeline to social media platforms.
-    - `regenerate-post`: Allows regeneration of single posts.
+  - `create-brief`: Dual AI system (Gemini + Claude) for content generation.
+  - `schedule-post`: Automated scheduling of posts.
+  - `publish-post`: Content publishing pipeline to social media platforms.
+  - `regenerate-post`: Allows regeneration of single posts.
 - **Real-time Dashboard:** Live content generation tracking with Supabase Realtime subscriptions, status updates, and campaign overview.
 - **Content Management:** Review and editing interface for generated content, including post approval workflow and content scheduling.
 
@@ -48,13 +48,13 @@ This document summarizes the features and functionalities that have been impleme
 ## Phase 7: Social Media Platform Integration (In Progress)
 
 - **Social Media OAuth Setup:**
-    - Database migration for `social_connections` table to store encrypted tokens.
-    - Database migration for `upsert_social_connection` function for secure token storage.
-    - Database migration for `decrypt_token` function to retrieve tokens securely.
-    - UI for managing social media connections (`SocialConnectionsManager`).
-    - API routes for initiating OAuth flows for LinkedIn, Twitter, Facebook, and Instagram.
-    - Edge Functions for handling OAuth callbacks from LinkedIn, Twitter, Facebook, and Instagram, including secure token storage.
+  - Database migration for `social_connections` table to store encrypted tokens.
+  - Database migration for `upsert_social_connection` function for secure token storage.
+  - Database migration for `decrypt_token` function to retrieve tokens securely.
+  - UI for managing social media connections (`SocialConnectionsManager`).
+  - API routes for initiating OAuth flows for LinkedIn, Twitter, Facebook, and Instagram.
+  - Edge Functions for handling OAuth callbacks from LinkedIn, Twitter, Facebook, and Instagram, including secure token storage.
 - **Publishing Pipeline:**
-    - `publish-post` Edge Function with API calls implemented for LinkedIn, Twitter, Facebook, and Instagram.
+  - `publish-post` Edge Function with API calls implemented for LinkedIn, Twitter, Facebook, and Instagram.
 
 **Note:** Deployment of new and updated Edge Functions is pending due to local Docker environment requirements for the `supabase functions deploy` command. Manual deployment is required until this is resolved.
