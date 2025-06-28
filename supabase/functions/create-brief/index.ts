@@ -125,104 +125,130 @@ serve(async (req) => {
       throw new Error('Invalid strategy response format')
     }
 
-    // STEP 2: Generate actual content for each strategy using Claude (via OpenAI API for now)
-    console.log('Generating content for each strategy...')
+    // STEP 2: Generate actual content for each strategy using parallel processing
+    console.log('Generating content for each strategy in parallel...')
     
-    const generatedPosts = []
-    
-    for (const strategy of strategies) {
-      const copywritingPrompt = COPYWRITING_PROMPT(brand, { topic, goal, cta_text: cta }, strategy)
-      
-      const copyResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
-            { role: 'system', content: 'You are an expert social media copywriter. Create engaging, platform-optimized content.' },
-            { role: 'user', content: copywritingPrompt }
-          ],
-          temperature: 0.8,
-          max_tokens: 800
-        })
-      })
-
-      if (!copyResponse.ok) {
-        console.error(`Copy generation failed for ${strategy.platform}: ${copyResponse.statusText}`)
-        continue
-      }
-
-      const copyData = await copyResponse.json()
-      const generatedText = copyData.choices[0].message.content
-
-      let generatedMediaUrls = null;
-
-      // Generate image if post type is image+caption
-      if (strategy.post_type === 'image+caption') {
-        console.log(`Generating image for ${strategy.platform}...`);
-        const imagePrompt = `Generate a social media image for ${brand.brand_name} about ${topic} with a ${strategy.content_angle} angle. Key message: ${strategy.key_message}`;
+    // Helper function to generate content for a single strategy
+    const generateContentForStrategy = async (strategy: any) => {
+      try {
+        const copywritingPrompt = COPYWRITING_PROMPT(brand, { topic, goal, cta_text: cta }, strategy)
         
-        const imageResponse = await fetch('https://api.openai.com/v1/images/generations', {
+        // Generate text content
+        const copyResponse = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'dall-e-3',
-            prompt: imagePrompt,
-            n: 1,
-            size: '1024x1024', // Or other sizes based on platform
-            response_format: 'b64_json',
-          }),
-        });
+            model: 'gpt-4o',
+            messages: [
+              { role: 'system', content: 'You are an expert social media copywriter. Create engaging, platform-optimized content.' },
+              { role: 'user', content: copywritingPrompt }
+            ],
+            temperature: 0.8,
+            max_tokens: 800
+          })
+        })
 
-        if (!imageResponse.ok) {
-          console.error(`Image generation failed for ${strategy.platform}: ${imageResponse.statusText}`);
-        } else {
-          const imageData = await imageResponse.json();
-          const base64Image = imageData.data[0].b64_json;
-          const imageBuffer = Uint8Array.from(atob(base64Image), c => c.charCodeAt(0));
+        if (!copyResponse.ok) {
+          throw new Error(`Copy generation failed for ${strategy.platform}: ${copyResponse.statusText}`)
+        }
 
-          const fileName = `generated-content/${Date.now()}-${strategy.platform}.png`;
-          const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('generated-content')
-            .upload(fileName, imageBuffer, {
-              contentType: 'image/png',
-              upsert: true,
+        const copyData = await copyResponse.json()
+        const generatedText = copyData.choices[0].message.content
+
+        let generatedMediaUrls = null;
+
+        // Generate image if post type is image+caption (run in parallel with text)
+        if (strategy.post_type === 'image+caption') {
+          console.log(`Generating image for ${strategy.platform}...`);
+          const imagePrompt = `Generate a social media image for ${brand.brand_name} about ${topic} with a ${strategy.content_angle} angle. Key message: ${strategy.key_message}`;
+          
+          try {
+            const imageResponse = await fetch('https://api.openai.com/v1/images/generations', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                model: 'dall-e-3',
+                prompt: imagePrompt,
+                n: 1,
+                size: '1024x1024',
+                response_format: 'b64_json',
+              }),
             });
 
-          if (uploadError) {
-            console.error(`Failed to upload image to Supabase Storage:`, uploadError);
-          } else {
-            const { data: { publicUrl } } = supabase.storage.from('generated-content').getPublicUrl(fileName);
-            generatedMediaUrls = [publicUrl];
+            if (imageResponse.ok) {
+              const imageData = await imageResponse.json();
+              const base64Image = imageData.data[0].b64_json;
+              const imageBuffer = Uint8Array.from(atob(base64Image), c => c.charCodeAt(0));
+
+              const fileName = `generated-content/${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${strategy.platform}.png`;
+              const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('generated-content')
+                .upload(fileName, imageBuffer, {
+                  contentType: 'image/png',
+                  upsert: true,
+                });
+
+              if (!uploadError) {
+                const { data: { publicUrl } } = supabase.storage.from('generated-content').getPublicUrl(fileName);
+                generatedMediaUrls = [publicUrl];
+              }
+            }
+          } catch (imageError) {
+            console.error(`Image generation failed for ${strategy.platform}:`, imageError);
+            // Continue without image - text-only post
           }
         }
+
+        // Save generated post to database
+        const { data: post, error: postError } = await supabase
+          .from('generated_posts')
+          .insert({
+            brief_id: brief.id,
+            platform: strategy.platform,
+            generated_text: generatedText,
+            generated_media_urls: generatedMediaUrls,
+            status: 'draft'
+          })
+          .select()
+          .single()
+
+        if (postError) {
+          throw new Error(`Failed to save post for ${strategy.platform}: ${postError.message}`)
+        }
+
+        console.log(`✅ Successfully generated content for ${strategy.platform}`)
+        return post
+        
+      } catch (error) {
+        console.error(`❌ Failed to generate content for ${strategy.platform}:`, error.message)
+        return null // Return null for failed generations
       }
+    }
 
-      // Save generated post to database
-      const { data: post, error: postError } = await supabase
-        .from('generated_posts')
-        .insert({
-          brief_id: brief.id,
-          platform: strategy.platform,
-          generated_text: generatedText,
-          generated_media_urls: generatedMediaUrls,
-          status: 'draft'
-        })
-        .select()
-        .single()
-
-      if (postError) {
-        console.error(`Failed to save post for ${strategy.platform}:`, postError)
-        continue
-      }
-
-      generatedPosts.push(post)
+    // Process strategies in parallel with controlled concurrency
+    const BATCH_SIZE = 3; // Limit concurrent API calls to avoid rate limiting
+    const generatedPosts = []
+    
+    for (let i = 0; i < strategies.length; i += BATCH_SIZE) {
+      const batch = strategies.slice(i, i + BATCH_SIZE)
+      console.log(`Processing batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(strategies.length / BATCH_SIZE)}...`)
+      
+      const batchResults = await Promise.allSettled(
+        batch.map(strategy => generateContentForStrategy(strategy))
+      )
+      
+      // Filter out failed generations and add successful ones
+      const successfulPosts = batchResults
+        .filter(result => result.status === 'fulfilled' && result.value !== null)
+        .map(result => result.value)
+      
+      generatedPosts.push(...successfulPosts)
     }
 
     // Update brief status

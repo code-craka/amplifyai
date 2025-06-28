@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -60,6 +60,15 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
   const [isConnected, setIsConnected] = useState(false);
   const supabase = createClient();
 
+  // Debounce function to prevent excessive updates
+  const debounce = useCallback(<T extends unknown[]>(func: (...args: T) => void, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: T) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  }, []);
+
   const fetchBriefWithPosts = useCallback(async (briefId: string) => {
     const { data } = await supabase
       .from('content_briefs')
@@ -72,9 +81,24 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
       .single();
 
     if (data) {
-      setBriefs(prev => [data, ...prev]);
+      setBriefs(prev => {
+        // Prevent duplicate briefs
+        const exists = prev.find(b => b.id === data.id);
+        if (exists) {
+          return prev.map(b => b.id === data.id ? data : b);
+        }
+        return [data, ...prev];
+      });
     }
   }, [supabase]);
+
+  // Debounced update function for better performance
+  const debouncedUpdateBriefs = useMemo(
+    () => debounce((updateFn: (prev: ContentBrief[]) => ContentBrief[]) => {
+      setBriefs(updateFn);
+    }, 100),
+    [debounce]
+  );
 
   useEffect(() => {
     // Set up real-time subscription for content briefs
@@ -95,7 +119,7 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
             // Fetch the complete brief with relations
             fetchBriefWithPosts(payload.new.id);
           } else if (payload.eventType === 'UPDATE') {
-            setBriefs(prev => prev.map(brief => 
+            debouncedUpdateBriefs(prev => prev.map(brief => 
               brief.id === payload.new.id 
                 ? { ...brief, ...payload.new }
                 : brief
@@ -122,21 +146,22 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
           
           if (payload.eventType === 'INSERT') {
             // Add new post to the corresponding brief
-            setBriefs(prev => prev.map(brief => {
-              if (brief.generated_posts.some(() => 
-                // Check if this post belongs to this brief
-                payload.new.brief_id === brief.id
-              )) {
-                return {
-                  ...brief,
-                  generated_posts: [...brief.generated_posts, payload.new as GeneratedPost]
-                };
+            debouncedUpdateBriefs(prev => prev.map(brief => {
+              if (payload.new.brief_id === brief.id) {
+                // Check if post already exists to prevent duplicates
+                const exists = brief.generated_posts.find(p => p.id === payload.new.id);
+                if (!exists) {
+                  return {
+                    ...brief,
+                    generated_posts: [...brief.generated_posts, payload.new as GeneratedPost]
+                  };
+                }
               }
               return brief;
             }));
           } else if (payload.eventType === 'UPDATE') {
             // Update existing post
-            setBriefs(prev => prev.map(brief => ({
+            debouncedUpdateBriefs(prev => prev.map(brief => ({
               ...brief,
               generated_posts: brief.generated_posts.map(post =>
                 post.id === payload.new.id 
@@ -153,7 +178,7 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
       briefsChannel.unsubscribe();
       postsChannel.unsubscribe();
     };
-  }, [userId, supabase, fetchBriefWithPosts]);
+  }, [userId, supabase, fetchBriefWithPosts, debouncedUpdateBriefs]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -185,16 +210,21 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
     }
   };
 
-  const stats = {
-    totalCampaigns: briefs.length,
-    completedCampaigns: briefs.filter(b => b.status === 'completed').length,
-    totalPosts: briefs.reduce((sum, brief) => sum + brief.generated_posts.length, 0),
-    processingCampaigns: briefs.filter(b => b.status === 'processing').length
-  };
+  // Memoize expensive calculations to prevent recalculation on every render
+  const stats = useMemo(() => {
+    return {
+      totalCampaigns: briefs.length,
+      completedCampaigns: briefs.filter(b => b.status === 'completed').length,
+      totalPosts: briefs.reduce((sum, brief) => sum + brief.generated_posts.length, 0),
+      processingCampaigns: briefs.filter(b => b.status === 'processing').length
+    };
+  }, [briefs]);
 
-  const scheduledPostsCount = briefs.reduce((sum, brief) => 
-    sum + brief.generated_posts.filter(post => post.schedule_time && post.status === 'scheduled').length, 0
-  );
+  const scheduledPostsCount = useMemo(() => {
+    return briefs.reduce((sum, brief) => 
+      sum + brief.generated_posts.filter(post => post.schedule_time && post.status === 'scheduled').length, 0
+    );
+  }, [briefs]);
 
   return (
     <div className="space-y-6">

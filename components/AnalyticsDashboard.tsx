@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -65,12 +65,8 @@ export default function AnalyticsDashboard() {
 
   const supabase = createClient()
 
-  useEffect(() => {
-    fetchAnalyticsData()
-    fetchInsights()
-  }, [timeframe, selectedPlatform]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const fetchAnalyticsData = async () => {
+  // Memoize data fetching functions to prevent unnecessary recreations
+  const fetchAnalyticsData = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -109,9 +105,9 @@ export default function AnalyticsDashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase, timeframe, selectedPlatform])
 
-  const fetchInsights = async () => {
+  const fetchInsights = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -133,9 +129,9 @@ export default function AnalyticsDashboard() {
     } catch (error) {
       console.error('Error:', error)
     }
-  }
+  }, [supabase])
 
-  const runContentAnalysis = async () => {
+  const runContentAnalysis = useCallback(async () => {
     try {
       setIsAnalyzing(true)
       
@@ -169,9 +165,9 @@ export default function AnalyticsDashboard() {
     } finally {
       setIsAnalyzing(false)
     }
-  }
+  }, [supabase, timeframe, fetchInsights])
 
-  const dismissInsight = async (insightId: string) => {
+  const dismissInsight = useCallback(async (insightId: string) => {
     try {
       const { error } = await supabase
         .from('content_insights')
@@ -186,9 +182,15 @@ export default function AnalyticsDashboard() {
       console.error('Error:', error)
       toast.error('Failed to dismiss insight')
     }
-  }
+  }, [supabase, insights])
 
-  const calculateOverallMetrics = () => {
+  useEffect(() => {
+    fetchAnalyticsData()
+    fetchInsights()
+  }, [fetchAnalyticsData, fetchInsights])
+
+  // Memoize expensive calculations to prevent recalculation on every render
+  const calculateOverallMetrics = useMemo(() => {
     if (analytics.length === 0) {
       return {
         totalViews: 0,
@@ -212,15 +214,15 @@ export default function AnalyticsDashboard() {
       avgEngagementRate,
       avgPerformanceScore
     }
-  }
+  }, [analytics])
 
-  const getTopPerformingPosts = () => {
+  const getTopPerformingPosts = useMemo(() => {
     return analytics
       .sort((a, b) => b.performance_score - a.performance_score)
       .slice(0, 5)
-  }
+  }, [analytics])
 
-  const getPlatformBreakdown = () => {
+  const getPlatformBreakdown = useMemo(() => {
     const platformStats = analytics.reduce((acc: Record<string, {
       count: number;
       totalViews: number;
@@ -251,7 +253,7 @@ export default function AnalyticsDashboard() {
     })
 
     return platformStats
-  }
+  }, [analytics])
 
   // const getTrendIcon = (trend: string) => {
   //   switch (trend) {
@@ -277,9 +279,9 @@ export default function AnalyticsDashboard() {
     }
   }
 
-  const metrics = calculateOverallMetrics()
-  const topPosts = getTopPerformingPosts()
-  const platformStats = getPlatformBreakdown()
+  const metrics = calculateOverallMetrics
+  const topPosts = getTopPerformingPosts
+  const platformStats = getPlatformBreakdown
 
   if (loading) {
     return (
