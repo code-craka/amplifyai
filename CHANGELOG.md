@@ -5,6 +5,113 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2025-06-28
+
+### 🎨 Dashboard Modernization & Advanced UX Revolution
+
+#### Added - Modern Animated Sidebar Navigation
+- **Collapsible Sidebar Component**
+  - Smooth expand/collapse animations with Framer Motion
+  - Professional left sidebar navigation replacing header navigation
+  - Mobile overlay support with responsive design
+  - Tooltip system for collapsed state navigation
+  - Dynamic brand logo and navigation items with descriptions
+
+- **Enhanced Navigation System**
+  - "Create Campaign" gradient button with direct CTA
+  - Organized main navigation (Dashboard, Brands, Calendar, Bulk Ops, Templates, Analytics)
+  - Bottom navigation section (Profile, Activity, Settings)
+  - Active link highlighting with blue theme integration
+  - Mobile-first responsive navigation with hamburger menu
+
+#### Added - Complete Dark Mode Integration
+- **next-themes Integration**
+  - System-wide dark mode with theme provider wrapper
+  - Theme switcher component in sidebar and landing page
+  - Automatic system theme detection and preference saving
+  - Smooth transitions between light/dark modes without flash
+  - Complete dark mode support across all dashboard pages
+
+- **Theme Provider Architecture**
+  - Resolves hydration issues between server and client rendering
+  - Optimized theme persistence and switching performance
+  - Compatible with Next.js 15 and React 19 patterns
+
+#### Added - User Management Pages
+- **Profile Management Page**
+  - Avatar display with image upload support and fallback initials
+  - Comprehensive user information editing (name, bio, preferences)
+  - Account statistics dashboard with usage metrics
+  - Integration with Supabase auth and user_metadata
+  - Modern form design with individual state management
+
+- **Activity Feed Timeline**
+  - Real-time activity tracking with campaign history
+  - Expandable campaign details with status indicators
+  - Usage statistics and subscription information display
+  - Timeline design with date grouping and activity types
+  - Performance metrics and engagement tracking
+
+- **Enhanced Settings Hub**
+  - 5-tab interface: General, Notifications, Privacy, Integrations, Billing
+  - Theme preferences with system/light/dark options
+  - Notification controls for campaigns, system, and marketing
+  - Privacy settings with data export and account deletion
+  - Integration of existing SocialConnectionsManager
+  - Billing information display with subscription details
+
+#### Added - Mobile Experience Enhancement
+- **Responsive Design System**
+  - Mobile overlay navigation with smooth animations
+  - Touch-friendly controls and optimized button sizes
+  - Collapsible sidebar behavior for tablet and desktop
+  - Professional mobile menu with full feature access
+  - Consistent design language across all screen sizes
+
+#### Fixed - TypeScript and Build Issues
+- **React 19 Compatibility**
+  - Fixed all deprecated React.ElementRef usage with React.ComponentRef
+  - Resolved any type conflicts and component prop typing
+  - Zero TypeScript compilation errors across all new components
+  - Modern React patterns with proper server component compatibility
+
+- **Hydration Stability**
+  - Eliminated client-server rendering mismatches
+  - Fixed theme provider hydration warnings
+  - Optimized component mounting and state initialization
+  - Zero console errors in production and development
+
+#### Technical Improvements
+- **Component Architecture**
+  - 5 new major components (Sidebar, ProfileManager, ActivityFeed, SettingsManager, ThemeProvider)
+  - Modern TypeScript patterns with proper prop typing
+  - Framer Motion integration for professional animations
+  - Modular design with reusable UI patterns
+
+- **Performance Optimizations**
+  - Memoized components to prevent unnecessary re-renders
+  - Optimized animation performance with transform-based animations
+  - Efficient theme switching without layout thrash
+  - Fast sidebar collapse/expand with hardware acceleration
+
+- **Code Quality**
+  - Zero ESLint warnings across all new components
+  - Consistent code formatting and TypeScript strict mode
+  - Comprehensive error handling and user feedback
+  - Professional component documentation and prop interfaces
+
+### Migration Notes
+- **Automatic Layout Migration**: Existing dashboard pages automatically use new sidebar layout
+- **Theme Persistence**: User theme preferences are automatically migrated and preserved
+- **Zero Breaking Changes**: All existing functionality remains intact with enhanced UX
+- **Mobile Compatibility**: Existing mobile users get improved navigation experience
+
+### Next Steps
+- All core dashboard functionality now uses modern sidebar navigation
+- Theme system is production-ready with full dark mode support
+- User management features provide complete profile and activity control
+- Foundation set for future enterprise features and team collaboration
+
 ## [2.3.2] - 2025-06-28
 
 ### 🔒 Final Database Security & Linter Compliance

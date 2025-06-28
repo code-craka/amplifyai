@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BrandsManager } from './BrandsManager'
 import { Sidebar } from '@/components/sidebar'
+import { ProfileManager } from './ProfileManager'
 
-export default async function BrandsPage() {
+export default async function ProfilePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -11,25 +11,26 @@ export default async function BrandsPage() {
     return redirect('/login')
   }
 
-  const { data: brands } = await supabase
-    .from('brands')
+  // Get user profile data
+  const { data: profile } = await supabase
+    .from('users')
     .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+    .eq('id', user.id)
+    .single()
 
   return (
     <Sidebar>
       <div className="p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Brand Management
+            Profile Settings
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Manage your brand guidelines to ensure consistent AI-generated content
+            Manage your account information and preferences
           </p>
         </div>
 
-        <BrandsManager initialBrands={brands || []} />
+        <ProfileManager user={user} profile={profile} />
       </div>
     </Sidebar>
   )

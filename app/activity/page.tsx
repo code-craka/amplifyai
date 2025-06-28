@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { RealtimeDashboard } from './RealtimeDashboard'
 import { Sidebar } from '@/components/sidebar'
+import { ActivityFeed } from './ActivityFeed'
 
-export default async function DashboardPage() {
+export default async function ActivityPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
     return redirect('/login')
   }
 
-  // Fetch initial data
+  // Fetch recent activity data
   const { data: briefs } = await supabase
     .from('content_briefs')
     .select(`
@@ -21,27 +21,39 @@ export default async function DashboardPage() {
     `)
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
+    .limit(50)
 
-  const { data: brands } = await supabase
-    .from('brands')
+  // Fetch subscription activity
+  const { data: subscription } = await supabase
+    .from('subscriptions')
     .select('*')
     .eq('user_id', user.id)
+    .single()
+
+  // Fetch usage data
+  const { data: usage } = await supabase
+    .from('usage_tracking')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(20)
 
   return (
     <Sidebar>
       <div className="p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Content Dashboard
+            Activity Feed
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Monitor your AI-generated content campaigns in real-time
+            Track your recent activity and content generation history
           </p>
         </div>
 
-        <RealtimeDashboard 
-          initialBriefs={briefs || []}
-          brands={brands || []}
+        <ActivityFeed 
+          briefs={briefs || []}
+          subscription={subscription}
+          usage={usage || []}
           userId={user.id}
         />
       </div>

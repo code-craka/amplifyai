@@ -62,7 +62,7 @@ interface RealtimeDashboardProps {
 const StatsCard = memo(({ title, value, icon: Icon }: { 
   title: string; 
   value: number; 
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
 }) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -302,21 +302,22 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
           
           // Optimized post updates
           setBriefs(prev => prev.map(brief => {
-            if (payload.new?.brief_id === brief.id) {
+            const newPost = payload.new as GeneratedPost & { brief_id: string };
+            if (newPost?.brief_id === brief.id) {
               if (payload.eventType === 'INSERT') {
-                const exists = brief.generated_posts.find(p => p.id === payload.new.id);
+                const exists = brief.generated_posts.find(p => p.id === newPost.id);
                 if (!exists) {
                   return {
                     ...brief,
-                    generated_posts: [...brief.generated_posts, payload.new as GeneratedPost]
+                    generated_posts: [...brief.generated_posts, newPost]
                   };
                 }
               } else if (payload.eventType === 'UPDATE') {
                 return {
                   ...brief,
                   generated_posts: brief.generated_posts.map(post =>
-                    post.id === payload.new.id 
-                      ? { ...post, ...payload.new }
+                    post.id === newPost.id 
+                      ? { ...post, ...newPost }
                       : post
                   )
                 };

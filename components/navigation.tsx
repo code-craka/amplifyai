@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { 
   Sparkles, 
   Menu, 
@@ -170,6 +171,7 @@ export function Navigation() {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
+            <ThemeSwitcher />
             <Link href="/auth/login">
               <Button variant="ghost" size="sm">
                 Sign In
@@ -296,6 +298,9 @@ export function Navigation() {
                   transition={{ delay: 0.4 }}
                   className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3"
                 >
+                  <div className="flex justify-center pb-3">
+                    <ThemeSwitcher />
+                  </div>
                   <Link
                     href="/auth/login"
                     className="block px-4 py-3 text-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200"

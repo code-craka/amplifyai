@@ -1,11 +1,23 @@
-# 🚀 AmplifyAI v2.3.2
+# 🚀 AmplifyAI v2.4.0
 
 > **Enterprise AI-Powered Social Media Content Generation Platform**  
-> **Now with Complete Database Security & Zero Linter Warnings**
+> **Now with Modern Dashboard & Complete Dark Mode Support**
 
-Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now featuring a **completely redesigned landing page** with modern animations and enhanced user experience.
+Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now featuring a **completely modernized dashboard** with animated sidebar navigation and comprehensive user experience.
 
-## 🎉 Latest Updates (v2.3.2)
+## 🎉 Latest Updates (v2.4.0)
+
+**🎨 Dashboard Modernization & UX Revolution**
+- ✅ **Modern Animated Sidebar** - Professional left sidebar navigation with smooth expand/collapse animations
+- ✅ **Complete Dark Mode Support** - System-wide theme switching with next-themes integration
+- ✅ **User Profile Management** - Comprehensive profile page with avatar, bio, and account settings
+- ✅ **Activity Feed Timeline** - Real-time activity tracking with campaign history and usage analytics
+- ✅ **Enhanced Settings Hub** - 5-tab settings interface covering notifications, privacy, integrations, and billing
+- ✅ **Mobile-Responsive Design** - Professional mobile experience with overlay navigation
+- ✅ **Zero Hydration Issues** - Resolved all client-server rendering conflicts for smooth operation
+- ✅ **Production-Ready Build** - Clean TypeScript compilation with zero ESLint warnings
+
+## Previous Updates (v2.3.2)
 
 **🔧 Complete Database Security & Linter Compliance**
 - ✅ **Final Policy Cleanup** - Removed remaining multiple permissive policies on post_analytics and subscriptions
