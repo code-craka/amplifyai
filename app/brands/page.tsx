@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { BrandsManager } from './BrandsManager'
+import DashboardHeader from '@/components/dashboard-header'
 
 export default async function BrandsPage() {
   const supabase = await createClient()
@@ -18,6 +19,8 @@ export default async function BrandsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <DashboardHeader />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">

@@ -93,8 +93,8 @@ export default function AnalyticsDashboard() {
       const { data, error } = await query
 
       if (error) {
-        console.error('Error fetching analytics:', error)
-        toast.error('Failed to fetch analytics data')
+        console.error('Error fetching analytics:', error.message || error)
+        toast.error(`Failed to fetch analytics data: ${error.message || 'Unknown error'}`)
         return
       }
 
@@ -121,7 +121,8 @@ export default function AnalyticsDashboard() {
         .limit(10)
 
       if (error) {
-        console.error('Error fetching insights:', error)
+        console.error('Error fetching insights:', error.message || error)
+        toast.error(`Failed to fetch insights: ${error.message || 'Unknown error'}`)
         return
       }
 

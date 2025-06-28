@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -58,7 +59,12 @@ interface RealtimeDashboardProps {
 export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardProps) {
   const [briefs, setBriefs] = useState<ContentBrief[]>(initialBriefs);
   const [isConnected, setIsConnected] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const supabase = createClient();
+
+  // Get active tab from URL or default to 'overview'
+  const activeTab = searchParams?.get('tab') || 'overview';
 
   // Debounce function to prevent excessive updates
   const debounce = useCallback(<T extends unknown[]>(func: (...args: T) => void, wait: number) => {
@@ -280,7 +286,10 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={(value) => {
+        const newUrl = value === 'overview' ? '/dashboard' : `/dashboard?tab=${value}`;
+        router.push(newUrl);
+      }} className="space-y-4">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <List className="h-4 w-4" />
