@@ -37,8 +37,9 @@ export async function checkUserLimits(): Promise<{
 		);
 
 		if (limitsError) {
-			console.error("Error checking usage limits:", limitsError);
-			return { limits: null, subscription: null, error: limitsError.message };
+			const errorMessage = limitsError.message || limitsError.details || "Unknown database error";
+			console.error("Error checking usage limits:", errorMessage, limitsError);
+			return { limits: null, subscription: null, error: errorMessage };
 		}
 
 		// Get subscription info
@@ -52,8 +53,9 @@ export async function checkUserLimits(): Promise<{
 
 		if (subError && subError.code !== "PGRST116") {
 			// PGRST116 is "not found"
-			console.error("Error getting subscription:", subError);
-			return { limits: null, subscription: null, error: subError.message };
+			const errorMessage = subError.message || subError.details || "Unknown subscription error";
+			console.error("Error getting subscription:", errorMessage, subError);
+			return { limits: null, subscription: null, error: errorMessage };
 		}
 
 		return {
@@ -61,11 +63,12 @@ export async function checkUserLimits(): Promise<{
 			subscription: subData || null,
 		};
 	} catch (error) {
-		console.error("Error in checkUserLimits:", error);
+		const errorMessage = error instanceof Error ? error.message : "Failed to check limits";
+		console.error("Error in checkUserLimits:", errorMessage, error);
 		return {
 			limits: null,
 			subscription: null,
-			error: "Failed to check limits",
+			error: errorMessage,
 		};
 	}
 }

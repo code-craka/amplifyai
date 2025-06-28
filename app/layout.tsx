@@ -50,7 +50,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className={GeistSans.className}>
+		<html lang="en" className={GeistSans.className} suppressHydrationWarning>
 			<head>
 				<meta
 					name="viewport"
