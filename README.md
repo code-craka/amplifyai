@@ -1,12 +1,19 @@
-# 🚀 AmplifyAI v2.2
+# 🚀 AmplifyAI v2.2.1
 
 > **Enterprise AI-Powered Social Media Content Generation Platform**
 
 Transform your social media strategy with AmplifyAI - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now featuring a **completely redesigned landing page** with modern animations and enhanced user experience.
 
-## 🎉 Latest Updates (v2.2.0)
+## 🎉 Latest Updates (v2.2.1)
 
-**🎨 Landing Page Redesign & Enhanced UX**
+**🔧 Dashboard Bug Fixes & Navigation Enhancement**
+- ✅ **Analytics Error Resolution** - Fixed empty error object logging with proper error messages
+- ✅ **Complete Dashboard Navigation** - Professional header with user profile and sign-out functionality
+- ✅ **URL-Based Tab Navigation** - Enhanced navigation between dashboard sections
+- ✅ **User Profile Display** - Avatar support with dropdown menu and user information
+- ✅ **Mobile-Responsive Navigation** - Hamburger menu and optimized mobile experience
+
+**🎨 Landing Page Redesign & Enhanced UX (v2.2.0)**
 - ✅ **Complete Landing Page Redesign** - Modern hero section with gradient animations and typing effects
 - ✅ **Interactive Animation Components** - Professional scroll-reveal animations and multi-animation button system
 - ✅ **Legal Compliance Pages** - Full suite of legal pages (Terms, Privacy, GDPR, etc.)
@@ -62,11 +69,14 @@ AmplifyAI revolutionizes content creation by solving the three biggest challenge
 
 ### 📊 Enhanced User Experience
 
+- **Professional Dashboard Navigation** - Complete header with user profile and sign-out
+- **URL-Based Tab Navigation** - Direct access to dashboard sections via URLs
 - **Interactive Calendar** - Month/week/day views with post previews
 - **Bulk Operations** - Multi-select content management with batch actions
 - **Content Templates** - Library of reusable templates with performance tracking
 - **Advanced Dashboard** - 5-tab interface (Overview, Calendar, Bulk Ops, Templates, Analytics)
-- **Mobile Responsive** - Touch-friendly controls and optimized layouts
+- **Mobile Responsive** - Touch-friendly controls and optimized layouts with hamburger menu
+- **User Profile Management** - Avatar display, user information, and account settings access
 
 ### 🎨 Modern Landing Page (NEW)
 

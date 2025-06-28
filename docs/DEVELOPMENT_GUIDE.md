@@ -248,6 +248,59 @@ supabase functions serve
 supabase functions deploy function-name
 ```
 
+### Dashboard Navigation Patterns
+
+#### URL-Based Tab Navigation
+```tsx
+// In dashboard components, use URL search params for navigation
+const searchParams = useSearchParams();
+const router = useRouter();
+const activeTab = searchParams?.get('tab') || 'overview';
+
+// Handle tab changes with URL updates
+<Tabs value={activeTab} onValueChange={(value) => {
+  const newUrl = value === 'overview' ? '/dashboard' : `/dashboard?tab=${value}`;
+  router.push(newUrl);
+}}>
+```
+
+#### Dashboard Header Integration
+```tsx
+// Add dashboard header to authenticated pages
+import DashboardHeader from '@/components/dashboard-header'
+
+export default function AuthenticatedPage() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <DashboardHeader />
+      {/* Page content */}
+    </div>
+  )
+}
+```
+
+#### User Profile Management
+```tsx
+// Handle user profile with proper TypeScript interfaces
+interface UserProfile {
+  id: string
+  email?: string
+  user_metadata?: {
+    full_name?: string
+    avatar_url?: string
+  }
+}
+
+// Use Next.js Image for avatars
+<Image
+  src={user.user_metadata.avatar_url}
+  alt={userDisplayName}
+  width={32}
+  height={32}
+  className="h-8 w-8 rounded-full object-cover"
+/>
+```
+
 ## Security Guidelines
 
 ### Environment Variables
@@ -331,6 +384,10 @@ pnpm install
 - **Motion component errors**: Ensure proper asChild handling with Slot
 - **Framer Motion hydration**: Use conditional rendering for animations
 - **AI function timeouts**: Verify API keys and implement retries
+- **Analytics empty error objects**: Use `error.message || error` for proper error logging
+- **Dashboard navigation issues**: Ensure proper URL-based navigation with search params
+- **User profile not displaying**: Check Supabase auth user metadata and avatar_url
+- **TypeScript interface conflicts**: Use unique interface names (e.g., `UserProfile` vs `User`)
 
 ## Performance Monitoring
 

@@ -1,7 +1,7 @@
 {
   "name": "amplifyai",
-  "version": "2.2.0",
-  "description": "Enterprise AI-Powered Social Media Content Generation Platform with Modern Landing Page and Enhanced UX",
+  "version": "2.2.1",
+  "description": "Enterprise AI-Powered Social Media Content Generation Platform with Professional Dashboard Navigation and Enhanced UX",
   "main": "index.js",
   "keywords": [
     "ai",

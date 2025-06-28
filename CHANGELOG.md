@@ -5,6 +5,62 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2025-06-28
+
+### 🔧 Dashboard Bug Fixes & Navigation Enhancement
+
+#### Fixed - Critical Dashboard Issues
+- **Analytics Error Resolution**
+  - Fixed empty error object logging in `AnalyticsDashboard.tsx`
+  - Enhanced error handling with specific error messages
+  - Improved user feedback for analytics and insights failures
+  - Better debugging capabilities with detailed error reporting
+
+- **User Experience Improvements**
+  - Added missing sign-out functionality throughout the platform
+  - Implemented comprehensive user profile display in dashboard
+  - Fixed navigation gaps between dashboard sections
+  - Enhanced mobile responsiveness for all navigation elements
+
+#### Added - Dashboard Navigation System
+- **Professional Dashboard Header**
+  - `components/dashboard-header.tsx` - Complete navigation solution
+  - User profile dropdown with avatar support
+  - Sign-out functionality with toast notifications
+  - Responsive navigation with mobile hamburger menu
+  - Professional AmplifyAI branding with gradient logo
+
+- **Enhanced Navigation Features**
+  - URL-based tab navigation for dashboard sections
+  - Direct links to Dashboard, Brands, Calendar, and Analytics
+  - Mobile-optimized navigation with collapsible menu
+  - User avatar with initials fallback and gradient background
+  - Profile and Settings page navigation links
+
+#### Enhanced - User Interface Components
+- **Dashboard Integration**
+  - Added dashboard header to `/dashboard` and `/brands` pages
+  - Implemented URL-based tab switching (e.g., `/dashboard?tab=analytics`)
+  - Enhanced user profile display with metadata support
+  - Improved TypeScript safety and error handling
+
+- **Technical Improvements**
+  - Fixed TypeScript errors in navigation components
+  - Added Next.js Image optimization for user avatars
+  - Enhanced Radix UI dropdown menu integration
+  - Improved build process with zero compilation errors
+
+#### Dependencies Enhanced
+- Utilized existing `@radix-ui/react-dropdown-menu` for user navigation
+- Enhanced Next.js Image component integration
+- Improved TypeScript type safety across navigation components
+
+### Technical Details
+- Zero breaking changes to existing functionality
+- All navigation components follow established design patterns
+- Performance optimized with proper React patterns
+- Accessibility improvements with proper ARIA labels
+
 ## [2.2.0] - 2025-06-28
 
 ### 🎨 Landing Page Redesign & Enhanced UX

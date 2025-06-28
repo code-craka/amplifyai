@@ -124,7 +124,24 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 - Custom performance measurement
 - Production monitoring with analytics integration
 
-### Landing Page Components (NEW)
+### Dashboard Navigation Components (v2.2.1)
+
+**DashboardHeader.tsx**:
+- Complete navigation header with user profile management
+- Sign-out functionality with toast notifications  
+- Responsive navigation with mobile hamburger menu
+- User avatar display with Next.js Image optimization
+- Dropdown menu with profile and settings access
+- URL-based navigation integration
+- Professional AmplifyAI branding with gradient logo
+
+**Enhanced RealtimeDashboard.tsx**:
+- URL-based tab navigation with search params
+- Navigation between dashboard sections via URLs
+- Enhanced error handling in analytics components
+- Improved TypeScript safety and user experience
+
+### Landing Page Components (v2.2.0)
 
 **Navigation.tsx**:
 - Responsive navigation with mobile menu
@@ -318,5 +335,5 @@ CREATE INDEX idx_post_analytics_post_platform ON post_analytics(post_id, platfor
 ---
 
 **Last Updated**: June 28, 2025  
-**Version**: 2.0.0 (Enterprise Performance Optimized)  
+**Version**: 2.2.1 (Dashboard Navigation & Bug Fixes)  
 **Maintainer**: Sayem Abdullah Rihan (@code-craka)
