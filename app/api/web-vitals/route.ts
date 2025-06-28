@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
 
 		// Example: Alert on poor Core Web Vitals
 		if (data.rating === "poor") {
-			console.warn(`⚠️ Poor ${data.name} detected:`, {
+			const sanitizedName = typeof data.name === "string" ? data.name.replace(/[^a-zA-Z0-9 _-]/g, "") : "unknown";
+			console.warn(`⚠️ Poor ${sanitizedName} detected:`, {
 				value: data.value,
 				url: data.url,
 				timestamp: data.timestamp,
