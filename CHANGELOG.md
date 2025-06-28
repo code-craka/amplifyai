@@ -5,6 +5,49 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.1] - 2025-06-28
+
+### 🔧 Hotfix v2.6.1: UI Consistency & Navigation Fixes
+
+#### Fixed - Critical Console Errors
+- **Usage Limits Error Handling**
+  - Fixed empty object logging in `lib/subscription/usage-limits.ts`
+  - Added proper error message extraction with fallbacks
+  - Enhanced error handling with meaningful fallback messages
+
+- **Theme Hydration Mismatch**
+  - Added `suppressHydrationWarning` to html element in `app/layout.tsx`
+  - Resolved server/client theme inconsistency issues
+
+#### Fixed - Database Analytics
+- **Analytics Query Error**
+  - Fixed "column generated_posts_1.user_id does not exist" error
+  - Corrected join path through content_briefs table in `components/AnalyticsDashboard.tsx`
+  - Updated query structure for proper database relationships
+
+#### Enhanced - Activity Feed Transformation
+- **Enterprise-Grade Interface**
+  - Complete redesign of `app/activity/ActivityFeed.tsx` (320 insertions, 197 deletions)
+  - Fixed subscription data fallbacks with proper error handling
+  - Enhanced stats cards with color-coded icons and proper spacing
+  - Added timeline-style activity feed layout with empty states
+  - Implemented performance optimizations with useCallback patterns
+
+#### Fixed - Navigation & Layout
+- **Footer Navigation Layout**
+  - Changed grid layout from `grid-cols-2 md:grid-cols-4` to `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`
+  - Fixed side-by-side navigation display for better responsive design
+
+- **Duplicate Button Elimination**
+  - Changed duplicate "View Dashboard" buttons to "Get Started" linking to `/auth/sign-up`
+  - Updated both `components/hero-section.tsx` and `components/hero-section-optimized.tsx`
+  - Improved call-to-action consistency across landing page
+
+#### Developer Experience
+- **Zero Console Errors** - Eliminated all runtime console errors for pristine user experience
+- **ESLint Compliance** - Maintained zero warnings with proper unused variable cleanup
+- **Type Safety** - Fixed all TypeScript strict mode compliance issues
+
 ## [2.7.0] - 2025-06-28
 
 ### 🧹 Codebase Optimization v2.7.0: Critical Duplicate Code Cleanup

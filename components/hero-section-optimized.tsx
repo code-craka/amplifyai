@@ -179,8 +179,8 @@ const HeroActions = memo(function HeroActions() {
 						className="min-w-[160px]"
 						asChild
 					>
-						<Link href="/dashboard" aria-label="Access dashboard">
-							View Dashboard <ArrowRight className="ml-2 w-4 h-4" />
+						<Link href="/auth/sign-up" aria-label="Start free trial">
+							Get Started <ArrowRight className="ml-2 w-4 h-4" />
 						</Link>
 					</AnimatedButton>
 				</div>

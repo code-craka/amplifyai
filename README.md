@@ -17,6 +17,15 @@ Transform your social media strategy with AmplifyAI - the intelligent platform t
 - ✅ **Zero Breaking Changes** - All functionality preserved while achieving dramatic code simplification
 - ✅ **Developer Experience** - Cleaner codebase with better organization and reusable utility patterns
 
+## Latest Updates (v2.6.1)
+
+**🔧 UI Consistency & Navigation Fixes**
+- ✅ **Console Error Handling** - Fixed usage limits error logging and theme hydration mismatch
+- ✅ **Analytics Database Joins** - Resolved column reference errors in post analytics queries
+- ✅ **Enterprise Activity Feed** - Complete transformation with modern UI patterns, data handling, and accessibility
+- ✅ **Footer Navigation Layout** - Fixed side-by-side navigation display for better UX
+- ✅ **Duplicate Button Elimination** - Resolved multiple "VIEW DASHBOARD" buttons across landing page
+
 ## Previous Updates (v2.6.0)
 
 **🎨 Landing Page & Dashboard Visual Optimization**

@@ -136,8 +136,8 @@ export function HeroSection() {
 								animation="slide"
 								asChild
 							>
-								<Link href="/dashboard">
-									View Dashboard <ArrowRight className="ml-2 w-4 h-4" />
+								<Link href="/auth/sign-up">
+									Get Started <ArrowRight className="ml-2 w-4 h-4" />
 								</Link>
 							</AnimatedButton>
 						</div>

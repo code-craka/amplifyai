@@ -244,7 +244,7 @@ export function Footer() {
 						</div>
 
 						{/* Links Sections */}
-						<div className="lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+						<div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 							<StaggerContainer staggerDelay={0.1}>
 								{footerSections.map((section) => (
 									<StaggerItem key={section.title} direction="up">
