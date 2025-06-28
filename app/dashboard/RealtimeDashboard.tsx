@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { ContentCalendar } from '@/components/ContentCalendar';
 import { BulkOperations } from '@/components/BulkOperations';
 import { ContentTemplates } from '@/components/ContentTemplates';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 
 interface GeneratedPost {
   id: string;
@@ -384,19 +385,8 @@ export function RealtimeDashboard({ initialBriefs, userId }: RealtimeDashboardPr
           <ContentTemplates />
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Analytics Dashboard</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-gray-500">
-                <BarChart3 className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p>Advanced analytics coming soon...</p>
-                <p className="text-sm mt-2">Track engagement, performance metrics, and optimization insights.</p>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="analytics">
+          <AnalyticsDashboard />
         </TabsContent>
       </Tabs>
     </div>
