@@ -94,9 +94,12 @@ export default function AnalyticsDashboard() {
 				.from("post_analytics")
 				.select(`
           *,
-          generated_posts!inner(user_id)
+          generated_posts!inner(
+            id,
+            content_briefs!inner(user_id)
+          )
         `)
-				.eq("generated_posts.user_id", user.id)
+				.eq("generated_posts.content_briefs.user_id", user.id)
 				.gte("published_at", timeframeStart.toISOString())
 				.order("published_at", { ascending: false });
 
