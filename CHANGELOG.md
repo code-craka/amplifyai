@@ -5,6 +5,37 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.2] - 2025-06-28
+
+### 🔧 TypeScript Modernization & React 19 Compatibility
+
+#### Fixed - React TypeScript Deprecation
+- **ElementRef Deprecation Resolution**
+  - Replaced all deprecated `React.ElementRef<T>` with `React.ComponentRef<T>`
+  - Updated 7 UI component files with modern React 19 TypeScript patterns
+  - Fixed TypeScript deprecation warnings across the entire codebase
+  - Maintained full type safety and component functionality
+
+#### Enhanced - UI Component TypeScript
+- **Updated Components**:
+  - `components/ui/progress.tsx` - Modern ref typing
+  - `components/ui/tabs.tsx` - Updated TabsList, TabsTrigger, TabsContent
+  - `components/ui/select.tsx` - All select-related components modernized
+  - `components/ui/dialog.tsx` - Dialog overlay, content, title, description
+  - `components/ui/checkbox.tsx` - Checkbox component ref typing
+  - `components/ui/dropdown-menu.tsx` - All dropdown menu components
+  - `components/ui/label.tsx` - Label component modernization
+
+#### Technical Improvements
+- **React 19 Compatibility**: Full alignment with React 19 TypeScript patterns
+- **Future-Proof Code**: Eliminated all deprecation warnings
+- **Zero Breaking Changes**: All components maintain identical functionality
+- **Build Verification**: Successful compilation with zero TypeScript errors
+
+### Dependencies Enhanced
+- All UI components now use React 19 compatible type patterns
+- Improved TypeScript safety across component library
+
 ## [2.2.1] - 2025-06-28
 
 ### 🔧 Dashboard Bug Fixes & Navigation Enhancement

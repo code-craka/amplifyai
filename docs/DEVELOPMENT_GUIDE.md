@@ -301,6 +301,48 @@ interface UserProfile {
 />
 ```
 
+#### React 19 TypeScript Patterns
+
+##### Modern Component Ref Typing
+```tsx
+// ✅ Correct - Use ComponentRef (React 19+)
+const MyComponent = React.forwardRef<
+  React.ComponentRef<typeof SomePrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SomePrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <SomePrimitive.Root
+    ref={ref}
+    className={className}
+    {...props}
+  />
+))
+
+// ❌ Deprecated - Don't use ElementRef
+const OldComponent = React.forwardRef<
+  React.ElementRef<typeof SomePrimitive.Root>, // Deprecated!
+  React.ComponentPropsWithoutRef<typeof SomePrimitive.Root>
+>
+```
+
+##### UI Component Best Practices
+```tsx
+// Always use ComponentRef for UI components
+import * as React from "react"
+import * as RadixPrimitive from "@radix-ui/react-primitive"
+
+const UIComponent = React.forwardRef<
+  React.ComponentRef<typeof RadixPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof RadixPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <RadixPrimitive.Root
+    ref={ref}
+    className={cn("default-styles", className)}
+    {...props}
+  />
+))
+UIComponent.displayName = RadixPrimitive.Root.displayName
+```
+
 ## Security Guidelines
 
 ### Environment Variables
@@ -388,6 +430,8 @@ pnpm install
 - **Dashboard navigation issues**: Ensure proper URL-based navigation with search params
 - **User profile not displaying**: Check Supabase auth user metadata and avatar_url
 - **TypeScript interface conflicts**: Use unique interface names (e.g., `UserProfile` vs `User`)
+- **React.ElementRef deprecation**: Use `React.ComponentRef<T>` instead of deprecated `React.ElementRef<T>`
+- **TypeScript component refs**: Always use modern React 19 typing patterns for forwardRef components
 
 ## Performance Monitoring
 
