@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
@@ -66,14 +67,19 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
 
   if (isSuccess) {
     return (
-      <div className={`flex items-center gap-2 px-6 py-3 rounded-lg ${
-        variant === "white" 
-          ? "bg-white/20 text-white" 
-          : "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
-      }`}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className={`flex items-center gap-2 px-6 py-3 rounded-lg ${
+          variant === "white" 
+            ? "bg-white/20 text-white" 
+            : "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
+        }`}
+      >
         <Mail className="w-5 h-5" />
         <span className="font-medium">Thanks! You&apos;re on the waitlist.</span>
-      </div>
+      </motion.div>
     );
   }
 
@@ -91,10 +97,12 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
             : ""
         }
       />
-      <Button 
+      <AnimatedButton 
         type="submit" 
         size="lg" 
         disabled={isLoading}
+        animation="glow"
+        variant={variant === "white" ? "default" : "gradient"}
         className={
           variant === "white"
             ? "bg-white text-blue-600 hover:bg-white/90"
@@ -109,7 +117,7 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
         ) : (
           "Join Waitlist"
         )}
-      </Button>
+      </AnimatedButton>
     </form>
   );
 }
