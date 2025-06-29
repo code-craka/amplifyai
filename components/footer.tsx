@@ -20,57 +20,33 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
-import {
-	ScrollReveal,
-	StaggerContainer,
-	StaggerItem,
-} from "@/components/ui/scroll-reveal";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-const footerSections = [
-	{
-		title: "Product",
-		links: [
-			{ name: "Features", href: "#features" },
-			{ name: "Pricing", href: "#pricing" },
-			{ name: "Dashboard", href: "/dashboard" },
-			{ name: "API", href: "/api-docs" },
-			{ name: "Integrations", href: "/integrations" },
-			{ name: "Templates", href: "/templates" },
-		],
-	},
-	{
-		title: "Company",
-		links: [
-			{ name: "About Us", href: "/about" },
-			{ name: "Careers", href: "/careers" },
-			{ name: "Blog", href: "/blog" },
-			{ name: "Press", href: "/press" },
-			{ name: "Partners", href: "/partners" },
-			{ name: "Contact", href: "/contact" },
-		],
-	},
-	{
-		title: "Resources",
-		links: [
-			{ name: "Documentation", href: "/docs" },
-			{ name: "Help Center", href: "/help" },
-			{ name: "Community", href: "/community" },
-			{ name: "Tutorials", href: "/tutorials" },
-			{ name: "Webinars", href: "/webinars" },
-			{ name: "Case Studies", href: "/case-studies" },
-		],
-	},
-	{
-		title: "Legal",
-		links: [
-			{ name: "Privacy Policy", href: "/legal/privacy" },
-			{ name: "Terms of Service", href: "/legal/terms" },
-			{ name: "GDPR", href: "/legal/gdpr" },
-			{ name: "Acceptable Use", href: "/legal/acceptable-use" },
-			{ name: "Refund Policy", href: "/legal/refund-policy" },
-			{ name: "SLA", href: "/legal/sla" },
-		],
-	},
+const navigationLinks = [
+	{ name: "Features", href: "#features" },
+	{ name: "Pricing", href: "#pricing" },
+	{ name: "Dashboard", href: "/dashboard" },
+	{ name: "API", href: "/api-docs" },
+	{ name: "Integrations", href: "/integrations" },
+	{ name: "Templates", href: "/templates" },
+	{ name: "About Us", href: "/about" },
+	{ name: "Careers", href: "/careers" },
+	{ name: "Blog", href: "/blog" },
+	{ name: "Press", href: "/press" },
+	{ name: "Partners", href: "/partners" },
+	{ name: "Contact", href: "/contact" },
+	{ name: "Documentation", href: "/docs" },
+	{ name: "Help Center", href: "/help" },
+	{ name: "Community", href: "/community" },
+	{ name: "Tutorials", href: "/tutorials" },
+	{ name: "Webinars", href: "/webinars" },
+	{ name: "Case Studies", href: "/case-studies" },
+	{ name: "Privacy Policy", href: "/legal/privacy" },
+	{ name: "Terms of Service", href: "/legal/terms" },
+	{ name: "GDPR", href: "/legal/gdpr" },
+	{ name: "Acceptable Use", href: "/legal/acceptable-use" },
+	{ name: "Refund Policy", href: "/legal/refund-policy" },
+	{ name: "SLA", href: "/legal/sla" },
 ];
 
 const socialLinks = [
@@ -243,31 +219,27 @@ export function Footer() {
 							</ScrollReveal>
 						</div>
 
-						{/* Links Sections */}
-						<div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-							<StaggerContainer staggerDelay={0.1}>
-								{footerSections.map((section) => (
-									<StaggerItem key={section.title} direction="up">
-										<div>
-											<h4 className="text-lg font-semibold mb-4 text-white">
-												{section.title}
-											</h4>
-											<ul className="space-y-3">
-												{section.links.map((link) => (
-													<li key={link.name}>
-														<Link
-															href={link.href}
-															className="text-blue-100 hover:text-white transition-colors duration-200 hover:underline"
-														>
-															{link.name}
-														</Link>
-													</li>
-												))}
-											</ul>
+						{/* Horizontal Navigation Links */}
+						<div className="lg:col-span-4">
+							<ScrollReveal direction="up" delay={0.2}>
+								<nav className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-6 lg:gap-8">
+									{navigationLinks.map((link, index) => (
+										<div key={link.name} className="flex items-center">
+											<Link
+												href={link.href}
+												className="text-sm text-blue-100 hover:text-white transition-colors duration-200 hover:underline whitespace-nowrap"
+											>
+												{link.name}
+											</Link>
+											{index < navigationLinks.length - 1 && (
+												<span className="text-blue-200/50 ml-4 md:ml-6 lg:ml-8 select-none">
+													•
+												</span>
+											)}
 										</div>
-									</StaggerItem>
-								))}
-							</StaggerContainer>
+									))}
+								</nav>
+							</ScrollReveal>
 						</div>
 					</div>
 				</div>

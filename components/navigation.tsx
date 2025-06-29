@@ -103,22 +103,20 @@ export function Navigation() {
 					</motion.div>
 
 					{/* Desktop Navigation */}
-					<div className="hidden lg:flex items-center space-x-1">
+					<div className="hidden lg:flex items-center space-x-2">
 						{navigationItems.map((item) => (
 							<div key={item.name} className="relative">
 								{item.dropdown ? (
-									<div
-										className="relative"
-										onMouseEnter={() => setActiveDropdown(item.name)}
-										onMouseLeave={() => setActiveDropdown(null)}
-									>
-										<Button
-											variant="ghost"
-											className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
+									<div className="relative">
+										<button
+											type="button"
+											className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
+											onMouseEnter={() => setActiveDropdown(item.name)}
+											onMouseLeave={() => setActiveDropdown(null)}
 										>
 											{item.name}
 											<ChevronDown className="ml-1 w-4 h-4" />
-										</Button>
+										</button>
 
 										<AnimatePresence>
 											{activeDropdown === item.name && (
@@ -171,7 +169,7 @@ export function Navigation() {
 					</div>
 
 					{/* Auth Buttons */}
-					<div className="hidden lg:flex items-center space-x-3">
+					<div className="hidden lg:flex items-center space-x-4">
 						<ThemeSwitcher />
 						<Link href="/auth/login">
 							<Button variant="ghost" size="sm">
@@ -241,6 +239,7 @@ export function Navigation() {
 										{item.dropdown ? (
 											<div>
 												<button
+													type="button"
 													onClick={() => handleDropdownToggle(item.name)}
 													className="flex items-center justify-between w-full px-4 py-3 text-left text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200"
 												>

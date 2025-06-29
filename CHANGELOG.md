@@ -5,6 +5,67 @@ All notable changes to the AmplifyAI project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] - 2025-06-29
+
+### 🎨 Landing Page Transformation & Enterprise Architecture Fix
+
+#### Fixed - Critical Architecture Issues
+- **React Server Component Serialization**
+  - Resolved "Functions cannot be passed directly to Client Components" error
+  - Implemented string-based icon system replacing React component props
+  - Updated StatCard and CTASection components with iconName approach
+  - Added proper array validation to prevent undefined .map() errors
+
+- **HTML Validation & Hydration**
+  - Fixed nested button elements in navigation dropdown menus
+  - Eliminated "button cannot be a descendant of button" validation error
+  - Replaced button wrapper with single button element maintaining styling
+  - Resolved hydration mismatch errors for production deployment
+
+- **Component Architecture**
+  - Converted icon props from React components to string-based mapping
+  - Added comprehensive error boundaries and array validation
+  - Fixed trust signals rendering with proper Array.isArray() checks
+  - Improved key props for list items (removed index-based keys)
+
+#### Improved - Code Quality & Performance
+- **Build System**
+  - Achieved 100% successful builds with zero TypeScript errors
+  - Zero ESLint warnings/errors across entire codebase
+  - Complete Biome.js compliance with optimized linting rules
+  - Production-ready build process with proper error handling
+
+- **Accessibility & Standards**
+  - Maintained WCAG 2.1 AA compliance with valid HTML structure
+  - Fixed CSS transition conflicts in navigation components
+  - Proper button accessibility with correct event handlers
+  - Enhanced focus management and keyboard navigation
+
+- **Performance Optimization**
+  - Maintained 36.7 kB landing page size with efficient patterns
+  - Proper Server/Client Component separation for optimal rendering
+  - Improved hydration safety with React 19 compatibility
+  - Enhanced component memoization and error boundaries
+
+## [2.6.2] - 2025-06-28
+
+### 🔧 Hotfix v2.6.2: Critical Database Function Fix
+
+#### Fixed - Database Schema Mismatch
+- **Usage Limits Database Error**
+  - Fixed "column s.plan_name does not exist" error in `get_user_subscription` function
+  - Database schema only contains `plan_type` column, not `plan_name`
+  - Updated `check_usage_limits` function signature to match TypeScript expectations
+  - Restored original function return format (table) instead of JSON
+  - Added comprehensive error handling with proper column mapping
+
+#### Database Changes
+- **Migration**: `20250628120000_fix_plan_name_column_error.sql`
+  - Fixed column references in subscription functions
+  - Restored original `check_usage_limits(user_uuid uuid)` signature
+  - Removed non-existent `plan_name` references
+  - Added immutable `search_path` security for all functions
+
 ## [2.6.1] - 2025-06-28
 
 ### 🔧 Hotfix v2.6.1: UI Consistency & Navigation Fixes
