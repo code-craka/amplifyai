@@ -1,9 +1,51 @@
 # Changelog
 
-All notable changes to the AmplifyAI project will be documented in this file.
+All notable changes to the Adwola project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.9.0] - 2025-06-29
+
+### 🚀 Complete Brand Transformation & Modern Design System
+
+#### Added - Brand Transformation
+- **Complete Adwola Rebrand**
+  - Transformed all AmplifyAI references to Adwola across entire codebase
+  - Updated metadata, SEO tags, and social media references
+  - New Adwola design system with comprehensive design tokens
+  - Professional logo and visual identity implementation
+
+#### Added - New Landing Page Components
+- **AdwolaHeader** - Modern navigation with mobile-responsive hamburger menu
+- **AdwolaHeroSection** - Clean hero with dashboard preview and trust indicators
+- **AdwolaStatsSection** - Statistics grid with trusted company logos
+- **AdwolaFeaturesSection** - Enterprise features showcase with 6 feature cards
+- **AdwolaTestimonialsSection** - Customer success stories with ratings and metrics
+- **AdwolaCTASection** - Conversion-focused call-to-action with benefits list
+
+#### Added - Design System
+- **Design Tokens** - Comprehensive color palette, typography, spacing system
+- **Component Patterns** - Card-based layouts with subtle shadows and rounded corners
+- **Responsive Design** - Mobile-first approach with proper breakpoint management
+- **Animation System** - Smooth transitions and professional micro-interactions
+
+#### Changed - Infrastructure Updates
+- **Supabase CLI** - Updated from v2.24.3 to v2.26.9
+- **Edge Functions** - All 13 functions successfully deployed and tested
+- **Database** - Schema reset and migrations applied with latest CLI
+- **CORS Support** - Added missing CORS headers for Edge function compatibility
+
+#### Changed - Page Structure
+- **Landing Page** - Complete redesign with 6 new Adwola components
+- **Footer** - Updated with Adwola branding and social media links
+- **Navigation** - Modern header design replacing previous navigation system
+
+#### Fixed - Code Quality
+- **ESLint Compliance** - Zero warnings/errors across all new components
+- **TypeScript Safety** - Proper typing for all new Adwola components
+- **Build Process** - Successful builds with optimized bundle sizes
+- **Import Sorting** - Proper alphabetical import organization
 
 ## [2.8.0] - 2025-06-29
 

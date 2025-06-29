@@ -50,20 +50,20 @@ const navigationLinks = [
 ];
 
 const socialLinks = [
-	{ name: "Twitter", href: "https://twitter.com/amplifyai", icon: Twitter },
+	{ name: "Twitter", href: "https://twitter.com/adwola", icon: Twitter },
 	{
 		name: "LinkedIn",
-		href: "https://linkedin.com/company/amplifyai",
+		href: "https://linkedin.com/company/adwola",
 		icon: Linkedin,
 	},
-	{ name: "Facebook", href: "https://facebook.com/amplifyai", icon: Facebook },
+	{ name: "Facebook", href: "https://facebook.com/adwola", icon: Facebook },
 	{
 		name: "Instagram",
-		href: "https://instagram.com/amplifyai",
+		href: "https://instagram.com/adwola",
 		icon: Instagram,
 	},
-	{ name: "GitHub", href: "https://github.com/amplifyai", icon: Github },
-	{ name: "YouTube", href: "https://youtube.com/amplifyai", icon: Youtube },
+	{ name: "GitHub", href: "https://github.com/adwola", icon: Github },
+	{ name: "YouTube", href: "https://youtube.com/adwola", icon: Youtube },
 ];
 
 export function Footer() {
@@ -142,7 +142,7 @@ export function Footer() {
 							<h3 className="text-3xl md:text-4xl font-bold mb-4">
 								Stay updated with{" "}
 								<span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-									AmplifyAI
+									Adwola
 								</span>
 							</h3>
 
@@ -194,7 +194,7 @@ export function Footer() {
 									>
 										<Sparkles className="w-7 h-7 text-white" />
 									</motion.div>
-									<span className="text-2xl font-bold">AmplifyAI</span>
+									<span className="text-2xl font-bold">Adwola</span>
 								</Link>
 
 								<p className="text-blue-100 text-lg leading-relaxed mb-6">
@@ -249,7 +249,7 @@ export function Footer() {
 					<div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
 						<ScrollReveal direction="right">
 							<div className="text-blue-100 text-center md:text-left">
-								<p className="mb-1">© 2025 AmplifyAI. All rights reserved.</p>
+								<p className="mb-1">© 2025 Adwola. All rights reserved.</p>
 								<p className="text-sm">
 									Built with ❤️ by{" "}
 									<Link
@@ -297,7 +297,7 @@ export function Footer() {
 						<div className="mt-8 pt-6 border-t border-white/5">
 							<div className="text-center text-sm text-blue-200/70 space-y-2">
 								<p>
-									AmplifyAI is GDPR compliant and SOC 2 certified. We take your
+									Adwola is GDPR compliant and SOC 2 certified. We take your
 									privacy seriously.
 								</p>
 								<div className="flex flex-wrap justify-center gap-4 text-xs">

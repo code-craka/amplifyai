@@ -1,24 +1,27 @@
 {
-	"name": "amplifyai",
-	"version": "2.8.0",
-	"description": "Enterprise AI-Powered Social Media Content Generation Platform with Modern Dashboard, Dark Mode, and Advanced UX",
+	"name": "adwola",
+	"version": "2.9.0",
+	"description": "Modern AI-Powered Social Media Content Generation Platform with Complete Brand Transformation and Pixel-Perfect Design",
 	"main": "index.js",
 	"keywords": [
+		"adwola",
 		"ai",
 		"social-media",
 		"content-generation",
 		"nextjs",
-		"supabase"
+		"supabase",
+		"design-system",
+		"modern-ui"
 	],
 	"author": "Sayem Abdullah Rihan (code-craka)",
 	"license": "MIT",
-	"homepage": "https://github.com/code-craka/amplifyai#readme",
+	"homepage": "https://github.com/code-craka/adwola#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/code-craka/amplifyai.git"
+		"url": "https://github.com/code-craka/adwola.git"
 	},
 	"bugs": {
-		"url": "https://github.com/code-craka/amplifyai/issues"
+		"url": "https://github.com/code-craka/adwola/issues"
 	},
 	"private": true,
 	"scripts": {
