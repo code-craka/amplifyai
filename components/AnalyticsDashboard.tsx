@@ -13,6 +13,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import ABTestManager from "@/components/ABTestManager";
+import EnhancedAnalyticsDashboard from "@/components/EnhancedAnalyticsDashboard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -441,13 +442,18 @@ export default function AnalyticsDashboard() {
 				</Card>
 			</div>
 
-			<Tabs defaultValue="insights" className="space-y-4">
+			<Tabs defaultValue="enhanced" className="space-y-4">
 				<TabsList>
+					<TabsTrigger value="enhanced">Enhanced Analytics</TabsTrigger>
 					<TabsTrigger value="insights">AI Insights</TabsTrigger>
 					<TabsTrigger value="performance">Top Performing</TabsTrigger>
 					<TabsTrigger value="platforms">Platform Breakdown</TabsTrigger>
 					<TabsTrigger value="abtesting">A/B Testing</TabsTrigger>
 				</TabsList>
+
+				<TabsContent value="enhanced" className="space-y-4">
+					<EnhancedAnalyticsDashboard className="p-0 bg-transparent" />
+				</TabsContent>
 
 				<TabsContent value="insights" className="space-y-4">
 					<Card>

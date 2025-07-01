@@ -1,11 +1,27 @@
-# 🚀 Adwola v2.9.0
+# 🚀 Adwola v2.10.0
 
 > **Modern AI-Powered Social Media Content Generation Platform**  
-> **Complete Brand Transformation with Pixel-Perfect Design & Supabase v2.26.9**
+> **Enhanced Analytics Dashboard with Interactive Visualizations**
 
-Transform your social media strategy with Adwola - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now featuring **complete brand transformation**, **modern UI design system**, and **enterprise-grade responsive architecture** - delivering a premium user experience with the latest Supabase technology.
+Transform your social media strategy with Adwola - the intelligent platform that combines AI-driven strategy development with professional copywriting to create engaging, brand-consistent content across all major social platforms. Now featuring **enhanced analytics dashboard**, **interactive visualizations**, and **comprehensive performance tracking** - delivering advanced insights and professional analytics experience.
 
-## 🎉 Latest Updates (v2.9.0) - COMPLETE
+## 🎉 Latest Updates (v2.10.0) - COMPLETE
+
+**📊 Enhanced Analytics Dashboard with Interactive Visualizations**
+- ✅ **Recharts Integration** - Professional charting library for advanced data visualizations
+- ✅ **Multi-Platform Overview** - Real-time engagement trends across LinkedIn, Twitter, Facebook, Instagram
+- ✅ **AI Provider Comparison** - Direct performance comparison between OpenAI vs Vertex AI content generation
+- ✅ **Engagement Heatmaps** - Optimal posting time analysis with interactive day/hour visualization
+- ✅ **Content Type Distribution** - Performance breakdown by Images, Videos, Carousels, Text posts
+- ✅ **Platform Performance Cards** - Individual platform metrics with follower growth and engagement rates
+- ✅ **Export Functionality** - Comprehensive report generation and data export capabilities
+- ✅ **Real-time Data Integration** - Live connection to Supabase analytics tables with automatic updates
+- ✅ **Responsive Design** - Optimized analytics experience for desktop, tablet, and mobile devices
+- ✅ **Interactive Elements** - Date range selection, platform filtering, refresh capabilities, and drill-down views
+- ✅ **Zero ESLint Warnings** - Complete code quality compliance with TypeScript best practices
+- ✅ **Production Ready** - Successfully tested build, lint, and deployment with enhanced analytics features
+
+## Previous Updates (v2.9.0) - COMPLETE
 
 **🚀 Complete Brand Transformation & Modern Design System**
 - ✅ **Brand Rebrand** - Complete transformation from AmplifyAI to Adwola across all components and documentation
@@ -118,11 +134,11 @@ Transform your social media strategy with Adwola - the intelligent platform that
 - ✅ **Enhanced Navigation** - Responsive navigation with mobile menu and footer
 - ✅ **Production-Ready Components** - TypeScript-safe animations with proper error handling
 
-![AmplifyAI Banner](https://via.placeholder.com/800x400/6366f1/ffffff?text=AmplifyAI+-+AI-Powered+Social+Media+Content)
+![Adwola Banner](https://via.placeholder.com/800x400/6366f1/ffffff?text=Adwola+-+AI-Powered+Social+Media+Content)
 
-## ✨ Why AmplifyAI?
+## ✨ Why Adwola?
 
-AmplifyAI revolutionizes content creation by solving the three biggest challenges in social media marketing:
+Adwola revolutionizes content creation by solving the three biggest challenges in social media marketing:
 
 🎯 **Strategic Planning** - AI-powered content strategies tailored to your goals  
 ✍️ **Professional Copywriting** - Platform-optimized content that converts  
@@ -192,6 +208,7 @@ AmplifyAI revolutionizes content creation by solving the three biggest challenge
 | **Backend** | Supabase (PostgreSQL, Auth, Realtime) |
 | **AI/ML** | OpenAI GPT-4, Vertex AI Gemini (Dual Provider) |
 | **UI/UX** | shadcn/ui, Tailwind CSS, Radix UI, Framer Motion |
+| **Analytics** | Recharts, Interactive Visualizations, Heatmaps |
 | **Scheduling** | pg_cron, Supabase Edge Functions |
 | **Security** | RLS Policies, Enhanced Middleware |
 
@@ -207,8 +224,8 @@ AmplifyAI revolutionizes content creation by solving the three biggest challenge
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/code-craka/amplifyai.git
-cd amplifyai
+git clone https://github.com/code-craka/adwola.git
+cd adwola
 pnpm install
 ```
 

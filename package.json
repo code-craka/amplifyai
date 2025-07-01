@@ -1,7 +1,7 @@
 {
 	"name": "adwola",
-	"version": "2.9.0",
-	"description": "Modern AI-Powered Social Media Content Generation Platform with Complete Brand Transformation and Pixel-Perfect Design",
+	"version": "2.10.0",
+	"description": "Modern AI-Powered Social Media Content Generation Platform with Enhanced Analytics Dashboard and Interactive Visualizations",
 	"main": "index.js",
 	"keywords": [
 		"adwola",
@@ -10,7 +10,9 @@
 		"content-generation",
 		"nextjs",
 		"supabase",
-		"design-system",
+		"analytics",
+		"visualizations",
+		"recharts",
 		"modern-ui"
 	],
 	"author": "Sayem Abdullah Rihan (code-craka)",
@@ -63,6 +65,7 @@
 		"react-aria-components": "^1.10.1",
 		"react-dom": "^19.1.0",
 		"react-hook-form": "^7.59.0",
+		"recharts": "^3.0.2",
 		"simplex-noise": "^4.0.3",
 		"sonner": "^2.0.5",
 		"stripe": "^18.2.1",
