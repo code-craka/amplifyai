@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -56,6 +57,27 @@ export function SignUpForm({
 		}
 	};
 
+	const handleLinkedInSignUp = async () => {
+		const supabase = createClient();
+		setIsLoading(true);
+		setError(null);
+
+		try {
+			const { error } = await supabase.auth.signInWithOAuth({
+				provider: 'linkedin_oidc',
+				options: {
+					redirectTo: `${window.location.origin}/dashboard`,
+					scopes: 'openid profile email w_member_social'
+				}
+			});
+			if (error) throw error;
+		} catch (error: unknown) {
+			setError(error instanceof Error ? error.message : "Failed to connect with LinkedIn");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
 			<Card>
@@ -104,6 +126,26 @@ export function SignUpForm({
 							{error && <p className="text-sm text-red-500">{error}</p>}
 							<Button type="submit" className="w-full" disabled={isLoading}>
 								{isLoading ? "Creating an account..." : "Sign up"}
+							</Button>
+							<div className="relative">
+								<div className="absolute inset-0 flex items-center">
+									<span className="w-full border-t" />
+								</div>
+								<div className="relative flex justify-center text-xs uppercase">
+									<span className="bg-background px-2 text-muted-foreground">
+										Or continue with
+									</span>
+								</div>
+							</div>
+							<Button
+								type="button"
+								variant="outline"
+								className="w-full"
+								onClick={handleLinkedInSignUp}
+								disabled={isLoading}
+							>
+								<Linkedin className="mr-2 h-4 w-4 text-[#0A66C2]" />
+								Continue with LinkedIn
 							</Button>
 						</div>
 						<div className="mt-4 text-center text-sm">
