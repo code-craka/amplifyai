@@ -62,14 +62,14 @@ export default function EnhancedFeatures() {
             <span className="text-blue-700 font-semibold">Powered by Dual AI</span>
           </div>
           
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             Content Creation{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Reimagined
             </span>
           </h2>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Revolutionary AI technology that transforms how you create, optimize, and publish content across all social media platforms
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function EnhancedFeatures() {
 
         {/* CTA Section */}
         <div className="text-center mt-16">
-          <button className="group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+          <button className="group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
             <span className="relative z-10 flex items-center justify-center space-x-2">
               <span>Explore All Features</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

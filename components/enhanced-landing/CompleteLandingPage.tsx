@@ -245,6 +245,11 @@ export default function CompleteLandingPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Skip to main content link */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      
       {/* Header */}
       <header className="bg-black text-white sticky top-0 z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -279,6 +284,7 @@ export default function CompleteLandingPage() {
       </header>
 
       {/* Hero Section */}
+      <main id="main-content">
       <section className="relative min-h-screen bg-white pt-16 overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
@@ -298,7 +304,7 @@ export default function CompleteLandingPage() {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-5xl lg:text-6xl font-black leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-black leading-none">
                 Create{" "}
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
                   VIRAL
@@ -327,7 +333,7 @@ export default function CompleteLandingPage() {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                <button className="gradient-button bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
                   🚀 Start Free 14-Day Trial
                 </button>
                 <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:border-gray-400 hover:bg-gray-50 transition-all duration-300">
@@ -456,11 +462,11 @@ export default function CompleteLandingPage() {
                   <button
                     onClick={handleGenerate}
                     disabled={isGenerating}
-                    className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+                    className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400"
                   >
                     {isGenerating ? 'Generating...' : 'Regenerate'}
                   </button>
-                  <button className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                  <button className="px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
                     Publish
                   </button>
                 </div>
@@ -474,10 +480,10 @@ export default function CompleteLandingPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               Proven Results That Speak Volumes
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Join thousands of content creators who&apos;ve transformed their social media presence with measurable results
             </p>
           </div>
@@ -503,10 +509,10 @@ export default function CompleteLandingPage() {
       <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               Content Creation Reimagined
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Powerful AI-driven features designed to elevate your social media strategy and maximize engagement
             </p>
           </div>
@@ -678,6 +684,7 @@ export default function CompleteLandingPage() {
 
       {/* Footer */}
       <AdwolaFooter variant="full" showNewsletter={true} />
+      </main>
     </div>
   );
 }

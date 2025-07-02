@@ -1,7 +1,14 @@
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+
+const inter = Inter({
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "600", "700", "800", "900"],
+	display: "swap",
+	variable: "--font-inter",
+});
 
 const defaultUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -9,27 +16,27 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
 	metadataBase: new URL(defaultUrl),
-	title: "AmplifyAI - AI-Powered Social Media Content Platform",
+	title: "Adwola - AI-Powered Social Media Content Creation",
 	description:
-		"Transform your social media strategy with AI that creates engaging content campaigns in minutes, not hours. Professional-quality posts across all platforms.",
+		"Transform ideas into viral content with AI power. Create engaging posts across all platforms in seconds, not hours. Trusted by 10,000+ creators worldwide.",
 	keywords:
 		"AI content generation, social media marketing, content creation, artificial intelligence, social media automation, brand management",
 	authors: [
 		{ name: "Sayem Abdullah Rihan", url: "https://github.com/code-craka" },
 	],
 	openGraph: {
-		title: "AmplifyAI - AI-Powered Social Media Content Platform",
+		title: "Adwola - AI-Powered Social Media Content Creation",
 		description:
-			"Transform your social media strategy with AI that creates engaging content campaigns in minutes, not hours.",
+			"Transform ideas into viral content with AI power. Create engaging posts across all platforms in seconds, not hours.",
 		type: "website",
 		locale: "en_US",
-		siteName: "AmplifyAI",
+		siteName: "Adwola",
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "AmplifyAI - AI-Powered Social Media Content Platform",
+		title: "Adwola - AI-Powered Social Media Content Creation",
 		description:
-			"Transform your social media strategy with AI that creates engaging content campaigns in minutes, not hours.",
+			"Transform ideas into viral content with AI power. Create engaging posts across all platforms in seconds, not hours.",
 	},
 	robots: {
 		index: true,
@@ -50,22 +57,16 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className={GeistSans.className} suppressHydrationWarning>
+		<html lang="en" className={inter.variable} suppressHydrationWarning>
 			<head>
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1, viewport-fit=cover"
 				/>
-				<meta name="theme-color" content="#3b82f6" />
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link
-					rel="preconnect"
-					href="https://fonts.gstatic.com"
-					crossOrigin="anonymous"
-				/>
+				<meta name="theme-color" content="#667eea" />
 			</head>
 			<body
-				className="bg-background text-foreground antialiased"
+				className={`${inter.className} bg-background text-foreground antialiased`}
 				suppressHydrationWarning
 			>
 				<ThemeProvider

@@ -137,14 +137,14 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
                   <Mail className="w-8 h-8 text-white" />
                 </motion.div>
 
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 font-[Inter]">
+                <h3 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
                   Stay updated with{" "}
                   <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     {adwolaDesignSystem.brand.name}
                   </span>
                 </h3>
 
-                <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto font-[Inter]">
+                <p className="text-xl text-blue-50 mb-8 max-w-2xl mx-auto leading-relaxed">
                   {adwolaMessaging.valueProposition}
                 </p>
 
@@ -158,14 +158,14 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 focus:ring-white/20 font-[Inter]"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 focus:ring-white/20"
                   />
                   <AnimatedButton
                     type="submit"
                     variant="gradient"
                     animation="glow"
                     disabled={isLoading}
-                    className="shrink-0 font-[Inter]"
+                    className="shrink-0 font-semibold"
                   >
                     {isLoading ? "Subscribing..." : "Subscribe"}
                     <ArrowRight className="ml-2 w-4 h-4" />
@@ -192,14 +192,14 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
                   >
                     <Sparkles className="w-7 h-7 text-white" />
                   </motion.div>
-                  <span className="text-2xl font-bold font-[Inter]">{adwolaDesignSystem.brand.name}</span>
+                  <span className="text-2xl font-bold">{adwolaDesignSystem.brand.name}</span>
                 </Link>
 
-                <p className="text-blue-100 text-lg leading-relaxed mb-6 font-[Inter]">
+                <p className="text-blue-50 text-lg leading-relaxed mb-6">
                   {adwolaMessaging.keyMessages.quality}. {adwolaMessaging.keyMessages.speed}.
                 </p>
 
-                <div className="space-y-3 text-blue-100 font-[Inter]">
+                <div className="space-y-3 text-blue-50">
                   <div className="flex items-center space-x-3">
                     <MapPin className="w-5 h-5 text-blue-400" />
                     <span>San Francisco, CA</span>
@@ -224,7 +224,7 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
                     <div key={link.name} className="flex items-center">
                       <Link
                         href={link.href}
-                        className="text-sm text-blue-100 hover:text-white transition-colors duration-200 hover:underline whitespace-nowrap font-[Inter]"
+                        className="text-sm text-blue-50 hover:text-white transition-colors duration-200 hover:underline whitespace-nowrap"
                       >
                         {link.name}
                       </Link>
@@ -245,7 +245,7 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
         <div className="py-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <ScrollReveal direction="right">
-              <div className="text-blue-100 text-center md:text-left font-[Inter]">
+              <div className="text-blue-50 text-center md:text-left">
                 <p className="mb-1">© 2025 {adwolaDesignSystem.brand.name}. All rights reserved.</p>
                 <p className="text-sm">
                   Built with ❤️ by{" "}
@@ -263,7 +263,7 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
 
             <ScrollReveal direction="left">
               <div className="flex items-center space-x-4">
-                <span className="text-blue-100 text-sm font-medium font-[Inter]">
+                <span className="text-blue-50 text-sm font-medium">
                   Follow us:
                 </span>
                 <div className="flex space-x-3">
@@ -275,7 +275,7 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-blue-100 hover:text-white transition-all duration-300 backdrop-blur-sm"
+                        className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-blue-50 hover:text-white transition-all duration-300 backdrop-blur-sm"
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -293,7 +293,7 @@ export function AdwolaFooter({ variant = 'full', showNewsletter = true }: Adwola
           {variant === 'full' && (
             <ScrollReveal direction="up" delay={0.4}>
               <div className="mt-8 pt-6 border-t border-white/5">
-                <div className="text-center text-sm text-blue-200/70 space-y-2 font-[Inter]">
+                <div className="text-center text-sm text-blue-200/70 space-y-2">
                   <p>
                     {adwolaDesignSystem.brand.name} is GDPR compliant and SOC 2 certified. We take your
                     privacy seriously.

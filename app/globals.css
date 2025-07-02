@@ -63,6 +63,33 @@
 		@apply border-border;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground font-sans;
+		font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+	}
+	
+	/* Typography consistency */
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+		line-height: 1.2;
+		letter-spacing: -0.025em;
+	}
+	
+	/* Enhanced focus states for accessibility */
+	button:focus-visible,
+	a:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible {
+		@apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+	}
+	
+	/* Custom focus for gradient buttons */
+	.gradient-button:focus-visible {
+		@apply ring-2 ring-purple-400 ring-offset-2;
+	}
+	
+	/* Skip link for screen readers */
+	.skip-link {
+		@apply sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 z-50 bg-blue-600 text-white px-4 py-2 rounded-br-lg;
 	}
 }

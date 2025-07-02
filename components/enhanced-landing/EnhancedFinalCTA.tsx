@@ -77,7 +77,7 @@ export default function EnhancedFinalCTA() {
 
           {/* Main Headline */}
           <div className="space-y-6">
-            <h2 className="text-5xl lg:text-7xl font-bold leading-tight">
+            <h2 className="text-5xl lg:text-7xl font-bold leading-none">
               <span className="text-white">Ready to Go </span>
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse">
                 Viral?
@@ -134,14 +134,14 @@ export default function EnhancedFinalCTA() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-2xl mx-auto">
-            <button className="group relative overflow-hidden px-12 py-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-xl rounded-2xl shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 flex items-center space-x-3">
+            <button className="group relative overflow-hidden px-12 py-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-xl rounded-2xl shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 flex items-center space-x-3">
               <Rocket className="w-6 h-6 group-hover:animate-bounce" />
               <span className="relative z-10">Start Creating Now</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </button>
             
-            <button className="flex items-center space-x-3 px-12 py-6 border-2 border-white/30 text-white font-bold text-xl rounded-2xl hover:border-white/50 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
+            <button className="flex items-center space-x-3 px-12 py-6 border-2 border-white/30 text-white font-semibold text-xl rounded-2xl hover:border-white/50 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
               <Phone className="w-6 h-6" />
               <span>Book a Demo Call</span>
             </button>
