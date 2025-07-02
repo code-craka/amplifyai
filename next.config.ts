@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
 			"your-project.supabase.co", // Add your actual Supabase domain
 			"openai.com",
 			"oaidalleapiprodscus.blob.core.windows.net", // OpenAI DALL-E images
+			"images.unsplash.com", // Unsplash images for testimonials
 		],
 		formats: ["image/webp", "image/avif"],
 	},

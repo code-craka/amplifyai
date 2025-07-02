@@ -1,2 +1,2 @@
-// Export the entire optimized page
-export { default } from "./page-optimized";
+// Export the enhanced landing page
+export { default } from "./page-enhanced";

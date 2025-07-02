@@ -6,7 +6,7 @@ import { AdwolaHeader } from "@/components/adwola/adwola-header";
 import { AdwolaHeroSection } from "@/components/adwola/adwola-hero-section";
 import { AdwolaStatsSection } from "@/components/adwola/adwola-stats-section";
 import { AdwolaTestimonialsSection } from "@/components/adwola/adwola-testimonials-section";
-import { Footer } from "@/components/footer";
+import { AdwolaFooter } from "@/components/enhanced-landing/AdwolaFooter";
 
 export const metadata: Metadata = {
 	title: "Adwola - AI-Powered Social Media Content Creation | Save 95% Time",
@@ -71,7 +71,7 @@ export default function Home() {
 			<AdwolaCTASection />
 
 			{/* Footer */}
-			<Footer />
+			<AdwolaFooter variant="full" showNewsletter={true} />
 		</div>
 	);
 }
